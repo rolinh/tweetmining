@@ -35,3 +35,4 @@ command:
 
 And you should be all set.
 
+<!-- vim: set filetype=markdown textwidth=80 -->
