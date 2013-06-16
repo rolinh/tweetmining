@@ -2,6 +2,9 @@
 # coding: utf-8
 
 import credentials as c
+
+import json
+
 from twython import Twython, TwythonError
 
 # Twitter API >= v1.1 requires an authentification... even to fetch public data!
@@ -15,6 +18,6 @@ try:
 except TwythonError as e:
     print(e)
 
-f = open('../data/devset.json', 'w')
-f.write(str(result))
-f.close()
+with open('../data/devset.json', 'w') as fp:
+    json.dump(result, fp)
+
