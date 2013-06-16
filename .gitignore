@@ -1,4 +1,6 @@
 *.swp
+__pycache__
 bin
 include
 lib
+scripts/credentials.py
