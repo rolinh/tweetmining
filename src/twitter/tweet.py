@@ -1,4 +1,4 @@
-import user as u
+from twitter import user as u
 
 class Tweet:
     """Represents a tweet"""

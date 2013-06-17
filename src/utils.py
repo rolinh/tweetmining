@@ -1,4 +1,4 @@
-import tweet as t
+from twitter import tweet as t
 
 import json
 
