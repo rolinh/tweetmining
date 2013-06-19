@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Hashtags:
     """
     Represents Twitter hashtags. indices has been ommited as we just do not

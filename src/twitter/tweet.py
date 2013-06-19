@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from twitter import user as u
 
 class Tweet:

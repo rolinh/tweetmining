@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class UserMention:
     """
     Represents Twitter user_mention. indices and id_str have been ommited as we
@@ -21,7 +23,7 @@ class UserMention:
         return ("User Mention:\n"
                 "id: %s\n"
                 "name: %s\n"
-                "screen name: %s\n") % (self.id
+                "screen name: %s\n") % (self.id,
                                         self.name,
                                         self.screen_name)
 

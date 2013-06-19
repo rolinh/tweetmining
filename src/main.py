@@ -3,6 +3,10 @@
 
 import utils as u
 
-devset = u.json_to_tweets('../data/devset.json')
+devset = u.json_to_tweets('../data/foo.json')
 
+print('# of elements :')
+print(len(devset))
 
+for elmt in devset:
+    print(elmt)

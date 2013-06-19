@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Url:
     """
     Represents Twitter url. indices, expanded_url and url have been ommited as

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Entities:
     """Represents Twitter entities. Media object has been ommited here."""
 
@@ -16,9 +18,13 @@ class Entities:
                 "hashtags=%s>") % (self.hashtags)
 
     def __str__(self):
-        return ("Entities:\n"
-                "hashtags: %s\n") % (','.join(self.hashtags)
-                "urls: %s\n") % (','.join(self.urls)
-                "user mentions: %s\n") % (','.join(self.mentions)
-                                    )
+        user_mentions = [str(mention) for mention in self.user_mentions]
+        hashtags      = [str(hashtag) for hashtag in self.hashtags]
+        urls          = [str(url) for url in self.urls]
 
+        return ("Entities:\n"
+                "hashtags: %s\n"
+                "urls: %s\n"
+                "user mentions: %s\n") % (','.join(user_mentions),
+                                          ','.join(hashtags),
+                                          ','.join(urls))
