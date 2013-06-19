@@ -22,7 +22,7 @@ installed on your system.
 
 Set up a virtual environment first:
 
-    virtualenv -p /usr/bin/python2.7 --no-site-packages .
+    virtualenv -p python2.7 .
 
 And activate it:
 
