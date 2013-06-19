@@ -12,7 +12,7 @@ community.
 
 # SETUP
 
-This project uses python 3. Therefore, you obviously need python 3,
+This project uses python 2.7. Therefore, you obviously need python 2.7,
 pip and virtualenv are the recommended way to install all the required libraries
 in order to keep everything clean.
 
@@ -22,7 +22,7 @@ installed on your system.
 
 Set up a virtual environment first:
 
-    virtualenv --no-site-packages .
+    virtualenv -p /usr/bin/python2.7 --no-site-packages .
 
 And activate it:
 
