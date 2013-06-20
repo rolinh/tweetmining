@@ -1,11 +1,13 @@
 # coding: utf-8
 
 def format_for_nltk(labels, dataset):
+    """Format `labels` and `dataset` arrays to NLTK dataset format"""
     if len(labels) != len(dataset):
         return []
     return [(v, labels[i]) for i,v in enumerate(dataset)]
 
 def accuracy(labels, predictions):
+    """Compute the accuracy of predictions"""
     if len(labels) != len(predictions):
         return -1
 
@@ -18,3 +20,16 @@ def accuracy(labels, predictions):
         total += 1
 
     return (float(correct) / float(total)) * 100
+
+def highest_bin_freq(ary):
+    """Find the binary value that occurs the most frequently in a given
+    array of binary values. Note that all the binary values must be given
+    as a String"""
+    num_true  = 0
+    num_false = 0
+
+    for val in ary:
+        num_true  += 1 if val == '1' else 0
+        num_false += 1 if val == '0' else 0
+
+    return '1' if num_true > num_false else '0'

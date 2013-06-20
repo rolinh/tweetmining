@@ -5,6 +5,7 @@ from classifiers import naive_bayes as nb
 from classifiers import svm
 from classifiers import maxent as me
 from classifiers import decision_tree as dt
+from classifiers import majority_vote as mj
 
 from features import fake_feature
 
@@ -61,4 +62,9 @@ classifier4 = dt.DecisionTree()
 classifier4.train(train_labels, train_instances)
 accuracy4,_ = classifier4.test(test_labels, test_instances)
 print('Accuracy Decision Tree: %.2f%%\n') % (accuracy4)
+
+classifier5 = dt.DecisionTree()
+classifier5.train(train_labels, train_instances)
+accuracy5,_ = classifier5.test(test_labels, test_instances)
+print('Accuracy Majority: %.2f%%\n') % (accuracy5)
 
