@@ -12,16 +12,16 @@ from features import fake_feature
 import utils as u
 import math
 import random
-#import sys
+# import sys
 
-devset = u.json_to_tweets('../data/foo.json')
+devset = u.json_to_tweets('../data/dataset.json', True)
 
-#print('# of elements :')
-#print(len(devset))
+# print('# of elements :')
+# print(len(devset))
 
 #for elmt in devset:
 #    print(str(elmt).encode('ascii', 'xmlcharrefreplace'))
-#sys.exit()
+# sys.exit()
 
 retweet = u.tag_as_retweet(devset)
 print(u.tag_as_retweet(retweet))

@@ -10,16 +10,14 @@ import codecs
 import re
 import nltk
 
-def json_to_tweets(json_tweet_file, bad_data=False):
-    """Map each json object to a Twitter object, returning a collection of
-    tweets"""
+def json_to_tweets_helper(data, bad_data):
 
     tweet_collection = []
 
-    with codecs.open(json_tweet_file, 'r', 'utf-8') as f:
-        data = json.load(f)
-
     for tw in data['statuses']:
+        # yay, some tweet do not have any user (dafuk?)
+        if not 'user' in tw:
+            continue
 
         if bad_data:
             screen_name = ''
@@ -30,7 +28,7 @@ def json_to_tweets(json_tweet_file, bad_data=False):
                     user_favorite_count = \
                     followers_count = \
                     friends_count = \
-                    status_count = 0
+                    statuses_count = 0
             verified = False
         else:
             screen_name = tw['user']['screen_name']
@@ -80,6 +78,21 @@ def json_to_tweets(json_tweet_file, bad_data=False):
                         retweet_count)
 
         tweet_collection.append(tweet)
+
+    return tweet_collection
+
+def json_to_tweets(json_tweet_file, bad_data=False):
+    """Map each json object to a Twitter object, returning a collection of
+    tweets"""
+
+    tweet_collection = []
+
+    with codecs.open(json_tweet_file, 'r', 'utf-8') as f:
+        json_list = f.readlines()
+
+    for j in json_list:
+        data = json.loads(j)
+        tweet_collection += json_to_tweets_helper(data, bad_data)
 
     return tweet_collection
 
