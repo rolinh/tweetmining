@@ -5,6 +5,7 @@ from twitter import user_mention as um
 from twitter import entities as e
 
 import json
+import codecs
 
 def json_to_tweets(json_tweet_file):
     """Map each json object to a Twitter object, returning a collection of
@@ -12,7 +13,7 @@ def json_to_tweets(json_tweet_file):
 
     tweet_collection = []
 
-    with open(json_tweet_file) as f:
+    with codecs.open(json_tweet_file, 'r', 'utf-8') as f:
         data = json.load(f)
 
     for tw in data['statuses']:

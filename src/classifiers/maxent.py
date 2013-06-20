@@ -1,12 +1,12 @@
 from classifiers import abstract_classifier as ac
 from classifiers import classifiers_helper as helper
-from nltk.classify import naivebayes as nb
+from nltk.classify import maxent
 
-class NaiveBayes(ac.AbstractClassifier):
+class MaxEnt(ac.AbstractClassifier):
 
     def train(self, labels, train_set):
         data = helper.format_for_nltk(labels, train_set)
-        self.classifier = nb.NaiveBayesClassifier.train(data)
+        self.classifier = maxent.MaxentClassifier.train(data)
 
         # TODO use this in the main.py
         self.classifier.show_most_informative_features(5)

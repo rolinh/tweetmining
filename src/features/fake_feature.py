@@ -1,6 +1,6 @@
-from features import abstract_feature
+from features import abstract_feature as af
 
-class FakeFeature(AbstractFeature):
+class FakeFeature(af.AbstractFeature):
 
     def __repr__(self):
         return "<FakeFeature>"

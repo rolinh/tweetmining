@@ -1,15 +1,12 @@
 from classifiers import abstract_classifier as ac
 from classifiers import classifiers_helper as helper
-from nltk.classify import naivebayes as nb
+from nltk.classify import svm
 
-class NaiveBayes(ac.AbstractClassifier):
+class SVM(ac.AbstractClassifier):
 
     def train(self, labels, train_set):
         data = helper.format_for_nltk(labels, train_set)
-        self.classifier = nb.NaiveBayesClassifier.train(data)
-
-        # TODO use this in the main.py
-        self.classifier.show_most_informative_features(5)
+        self.classifier = svm.SvmClassifier.train(data)
 
     def test(self, labels, test_set):
         if self.classifier == None:

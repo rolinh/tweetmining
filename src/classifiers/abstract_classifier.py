@@ -1,34 +1,32 @@
-from abs import ABCMeta, abstractmethod
-
-class AbstractClassifier(metaclass=ABCMeta):
+class AbstractClassifier:
     """Abstract class wrapper for a classifier."""
 
     classifier = None
     """Trained classifier instance."""
 
-    @abstractmethod
-    def train(self, trainset):
+    def train(self, labels, train_set):
         """
         Train a classifier with the given train set.
-        `trainset` is expected to be a list of dictionnary where each
-        dictionnary represents an instance.
+        `labels` must be a list that contains the class for each instance of
+        the training set and `trainset` is expected to be a list of dictionnary
+        where each dictionnary represents an instance.
         Example:
-        trainset = [{'label':'1', 'feature1':'value1', 'feature2':'value2',...},
-                    {'label':'2', 'feature1':'value1', ...}, ...]
+        trainset = [{'feature1':'value1', 'feature2':'value2',...},
+                    {'feature1':'value1', ...}, ...]
         """
-        pass
+        raise NotImplementedError("Please Implement this method")
 
-    @abstractmethod
-    def test(self, testset):
+    def test(self, labels, test_set):
         """
         Test a classifier with the given test set.
-        `testset` is expected to be a list of dictionnary where each
-        dictionnary represents an instance.
+        `labels` must be a list that contains the class for each instance of
+
+        the test set and `testset` is expected to be a list of dictionnary where
+        each dictionnary represents an instance.
         Example:
-        testset = [{'label':'1', 'feature1':'value1', 'feature2':'value2', ...},
-                   {'label':'2', 'feature1':'value1', ...}, ...]
+        testset = [{'feature1':'value1', 'feature2':'value2', ...},
+                   {'feature1':'value1', ...}, ...]
         Return a pair of values: the first one is the accuracy of the classifier
         and the second one is the list of predicted labels.
         """
-        pass
-
+        raise NotImplementedError("Please Implement this method")

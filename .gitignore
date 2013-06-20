@@ -1,11 +1,13 @@
 *.swp
 *.pyc
+
 __pycache__
 bin
 include
 lib
-scripts/credentials.py
+local
 
 cleancsv.pl
-data/graph.dot
+graph.dot
 retweet.py
+scripts/credentials.py

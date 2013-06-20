@@ -1,3 +1,5 @@
 pyyaml
 nltk
 twython
+svmlight
+numpy
