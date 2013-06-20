@@ -1,9 +1,13 @@
+from abc import ABCMeta, abstractmethod
+
 class AbstractClassifier:
     """Abstract class wrapper for a classifier."""
+    __metaclass__ = ABCMeta
 
     classifier = None
     """Trained classifier instance."""
 
+    @abstractmethod
     def train(self, labels, train_set):
         """
         Train a classifier with the given train set.
@@ -14,8 +18,9 @@ class AbstractClassifier:
         trainset = [{'feature1':'value1', 'feature2':'value2',...},
                     {'feature1':'value1', ...}, ...]
         """
-        raise NotImplementedError("Please Implement this method")
+        pass
 
+    @abstractmethod
     def test(self, labels, test_set):
         """
         Test a classifier with the given test set.
@@ -29,4 +34,4 @@ class AbstractClassifier:
         Return a pair of values: the first one is the accuracy of the classifier
         and the second one is the list of predicted labels.
         """
-        raise NotImplementedError("Please Implement this method")
+        pass
