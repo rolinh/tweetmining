@@ -8,6 +8,7 @@ from twitter import entities as e
 import json
 import codecs
 import re
+import nltk
 
 def json_to_tweets(json_tweet_file):
     """Map each json object to a Twitter object, returning a collection of
@@ -78,3 +79,28 @@ def tag_as_retweet(dataset):
 
 
     return rval
+
+def text_as_corpus(dataset):
+    """Build a corpus (without unsignificant words) of from tweets"""
+
+    corpus = ""
+    tokeep = ['JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS',
+              'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
+    for tweet in dataset:
+        text = nltk.word_tokenize(tweet.text)
+        tags = nltk.pos_tag(text)
+
+        for tag in tags:
+            if tag[1] in tokeep:
+                corpus += tag[0]
+
+    return corpus
+
+def corpus_as_frequencies(corpus):
+    """Build a dictionary that contains each word of the given corpus and
+    its frequency"""
+
+    text = nltk.word_tokenize(corpus)
+    freq = nltk.FreqDist(text)
+
+    return hash(freq)

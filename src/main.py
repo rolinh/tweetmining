@@ -23,6 +23,10 @@ devset = u.json_to_tweets('../data/foo.json')
 #    print(str(elmt).encode('ascii', 'xmlcharrefreplace'))
 #sys.exit()
 
+retweet = u.tag_as_retweet(devset)
+print(u.tag_as_retweet(retweet))
+print(len(retweet))
+
 size       = int(math.floor(len(devset)*0.6666))
 train_data = devset[0:-size]
 test_data  = devset[-size+1:]
