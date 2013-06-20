@@ -10,7 +10,7 @@ import codecs
 import re
 import nltk
 
-def json_to_tweets(json_tweet_file):
+def json_to_tweets(json_tweet_file, bad_data=False):
     """Map each json object to a Twitter object, returning a collection of
     tweets"""
 
@@ -20,6 +20,30 @@ def json_to_tweets(json_tweet_file):
         data = json.load(f)
 
     for tw in data['statuses']:
+
+        if bad_data:
+            screen_name = ''
+            in_reply_to_status_id = \
+                    in_reply_to_user_id =\
+                    favorite_count = \
+                    retweet_count = \
+                    user_favorite_count = \
+                    followers_count = \
+                    friends_count = \
+                    status_count = 0
+            verified = False
+        else:
+            screen_name = tw['user']['screen_name']
+            in_reply_to_status_id = tw['in_reply_to_status_id']
+            in_reply_to_user_id = tw['in_reply_to_user_id']
+            favorite_count = tw['favorite_count']
+            retweet_count = tw['retweet_count']
+            user_favorite_count = tw['user']['favourites_count']
+            followers_count = tw['user']['followers_count']
+            friends_count = tw['user']['friends_count']
+            statuses_count = tw['user']['statuses_count']
+            verified = tw['user']['verified']
+
         hashtags = []
         for hashtag in tw['entities']['hashtags']:
             hashtags.append(h.Hashtags(hashtag['text']))
@@ -37,15 +61,23 @@ def json_to_tweets(json_tweet_file):
 
         entities = e.Entities(hashtags, urls, user_mentions)
 
-        user =  usr.User(tw['user']['id'], tw['user']['screen_name'])
+        user =  usr.User(tw['user']['id'],
+                         screen_name,
+                         user_favorite_count,
+                         followers_count,
+                         friends_count,
+                         statuses_count,
+                         verified)
 
         tweet = t.Tweet(tw['id'],
                         user,
                         tw['created_at'],
                         tw['text'],
                         entities,
-                        0,
-                        0)
+                        in_reply_to_status_id,
+                        in_reply_to_user_id,
+                        favorite_count,
+                        retweet_count)
 
         tweet_collection.append(tweet)
 

@@ -12,9 +12,7 @@ class Tweet:
                  in_reply_to_status_id,
                  in_reply_to_user_id,
                  favorite_count,
-                 favorited,
-                 retweet_count,
-                 retweeted):
+                 retweet_count):
         self.id = id
         self.user = user
         self.created_at = created_at
@@ -23,9 +21,7 @@ class Tweet:
         self.in_reply_to_status_id = in_reply_to_status_id
         self.in_reply_to_user_id = in_reply_to_user_id
         self.favorite_count = favorite_count
-        self.favorited = favorited
         self.retweet_count = retweet_count
-        self.retweeted = retweeted
 
     def __repr__(self):
         return ("<Tweet:"
@@ -37,15 +33,15 @@ class Tweet:
                 "in_reply_to_status_id=%s,"
                 "in_reply_to_user_id=%s,"
                 "favorite_count=%s,"
-                "favorited=%s,
-                "retweet_count=%s"
-                "retweeted=%s>") % (self.id,
-                                    self.user,
-                                    self.created_at,
-                                    self.text,
-                                    self.entities,
-                                    self.in_reply_to_status_id,
-                                    self.in_reply_to_user_id)
+                "retweet_count=%s>") % (self.id,
+                                        self.user,
+                                        self.created_at,
+                                        self.text,
+                                        self.entities,
+                                        self.in_reply_to_status_id,
+                                        self.in_reply_to_user_id,
+                                        self.favorite_count,
+                                        self.retweet_count)
 
     def __str__(self):
         return ("Tweet attributes:\n"
@@ -57,13 +53,13 @@ class Tweet:
                 "in_reply_to_status_id: %s\n"
                 "in_reply_to_user_id: %s\n"
                 "favorite_count: %s\n"
-                "favorited: %s\n
-                "retweet_count: %s\n"
-                "retweeted: %s\n") % (self.id,
-                                      str(self.user),
-                                      self.created_at,
-                                      self.text,
-                                      self.entities,
-                                      self.in_reply_to_status_id,
-                                      self.in_reply_to_user_id)
+                "retweet_count: %s\n") % (self.id,
+                                          str(self.user),
+                                          self.created_at,
+                                          self.text,
+                                          self.entities,
+                                          self.in_reply_to_status_id,
+                                          self.in_reply_to_user_id,
+                                          self.favorite_count,
+                                          self.retweet_count)
 
