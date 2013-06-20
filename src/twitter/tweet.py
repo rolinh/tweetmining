@@ -1,20 +1,18 @@
 # coding: utf-8
 
-from twitter import user as u
-
 class Tweet:
     """Represents a tweet"""
 
     def __init__(self,
                  id,
-                 user_id,
+                 user,
                  created_at,
                  text,
                  entities,
                  in_reply_to_status_id,
                  in_reply_to_user_id):
         self.id = id
-        self.user = u.User(user_id)
+        self.user = user
         self.created_at = created_at
         self.text = text
         self.entities = entities
@@ -30,7 +28,7 @@ class Tweet:
                 "entities=%s,"
                 "in_reply_to_status_id=%s,"
                 "in_reply_to_user_id=%s>") % (self.id,
-                                              str(self.user),
+                                              self.user,
                                               self.created_at,
                                               self.text,
                                               self.entities,
