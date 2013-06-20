@@ -83,7 +83,7 @@ def tag_as_retweet(dataset):
 def text_as_corpus(dataset):
     """Build a corpus (without unsignificant words) of from tweets"""
 
-    corpus = ""
+    corpus = []
     tokeep = ['JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS',
               'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
     for tweet in dataset:
@@ -92,9 +92,9 @@ def text_as_corpus(dataset):
 
         for tag in tags:
             if tag[1] in tokeep:
-                corpus += tag[0]
+                corpus.append(tag[0])
 
-    return corpus
+    return ' '.join(corpus)
 
 def corpus_as_frequencies(corpus):
     """Build a dictionary that contains each word of the given corpus and
