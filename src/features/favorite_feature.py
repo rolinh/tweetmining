@@ -1,12 +1,12 @@
 from features import abstract_feature as af
 
-class FollowersFeature(af.AbstractFeature):
+class FavoriteFeature(af.AbstractFeature):
 
     def __repr__(self):
-        return "<FollowersFeature>"
+        return "<FavoriteFeature>"
 
     def __str__(self):
-        return "Followers Feature"
+        return "Favorite Feature"
 
     def extract(self, tweet):
         return "favorite", tweet.favorite_count
