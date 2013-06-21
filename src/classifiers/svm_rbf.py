@@ -6,7 +6,7 @@ class SVMRBF(asvm.AbstractSVM):
         return "<SVMRBF>"
 
     def __str__(self):
-        return "SVM RBF"
+        return "Support Vector Machine with rbf kernel"
 
     def train(self, labels, train_set):
         super(SVMRBF, self).train_helper(labels, train_set, 'rbf')
