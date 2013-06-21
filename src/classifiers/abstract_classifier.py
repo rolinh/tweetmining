@@ -8,6 +8,14 @@ class AbstractClassifier:
     """Trained classifier instance."""
 
     @abstractmethod
+    def __repr__(self):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
     def train(self, labels, train_set):
         """
         Train a classifier with the given train set.

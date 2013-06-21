@@ -4,6 +4,12 @@ from nltk.classify import maxent
 
 class MaxEnt(ac.AbstractClassifier):
 
+    def __repr__(self):
+        return "<MaxEnt>"
+
+    def __str__(self):
+        return "Maximum Entropy"
+
     def train(self, labels, train_set):
         data = helper.format_for_nltk(labels, train_set)
         self.classifier = maxent.MaxentClassifier.train(data)

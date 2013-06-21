@@ -3,6 +3,12 @@ from classifiers import classifiers_helper as helper
 
 class MajorityVote(ac.AbstractClassifier):
 
+    def __repr__(self):
+        return "<MajorityVote>"
+
+    def __str__(self):
+        return "Majority Vote"
+
     def train(self, labels, train_set):
         self.classifier = helper.highest_bin_freq(labels)
         print(' MAJORITY !')
