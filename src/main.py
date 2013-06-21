@@ -16,6 +16,7 @@ from features import user_mentions_count_feature
 from features import favorite_count_feature
 from features import has_url_feature
 from features import friends_count_feature
+from features import verified_account_feature
 
 import utils as u
 import math
@@ -45,7 +46,8 @@ feat_objs    = [followers_count_feature.FollowersCountFeature(),
                 user_mentions_count_feature.UserMentionsCountFeature(),
                 favorite_count_feature.FavoriteCountFeature(),
                 has_url_feature.HasUrlFeature(),
-                friends_count_feature.FriendsCountFeature()]
+                friends_count_feature.FriendsCountFeature(),
+                verified_account_feature.VerifiedAccountFeature()]
 classif_objs = [nb.NaiveBayes(),
                 svm.SVM(),
                 #me.MaxEnt(),
