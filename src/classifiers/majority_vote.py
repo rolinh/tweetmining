@@ -11,8 +11,6 @@ class MajorityVote(ac.AbstractClassifier):
 
     def train(self, labels, train_set):
         self.classifier = helper.highest_bin_freq(labels)
-        print(' MAJORITY !')
-        print(self.classifier)
 
     def test(self, labels, test_set):
         if self.classifier == None:
