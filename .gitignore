@@ -1,6 +1,7 @@
 *.swp
 *.pyc
 
+_build
 __pycache__
 bin
 include
