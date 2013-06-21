@@ -1,4 +1,5 @@
 from classifiers import abstract_classifier as ac
+from classifiers import classifiers_helper as helper
 from sklearn import tree
 
 class DecisionTreeScikit(ac.AbstractClassifier):
