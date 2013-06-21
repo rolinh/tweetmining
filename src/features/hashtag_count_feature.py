@@ -9,4 +9,4 @@ class HashtagCountFeature(af.AbstractFeature):
         return "Hashtag Count Feature"
 
     def extract(self, tweet):
-        return "hashtag_count_feature", len(tweet.entities.hastags)
+        return "hashtag_count_feature", len(tweet.entities.hashtags)
