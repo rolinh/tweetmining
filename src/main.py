@@ -20,6 +20,7 @@ import math
 import random
 import sys
 
+print("Collecting data...")
 devset = u.json_to_tweets('../data/dataset.json', False)
 
 # print('# of elements :')
@@ -48,6 +49,7 @@ classif_objs = [nb.NaiveBayes(),
                 mv.MajorityVote()]
 
 # extracting training instances
+print("Extracting training instances...")
 train_instances = []
 train_labels    = []
 for elmt in train_data:
@@ -61,6 +63,7 @@ for elmt in train_data:
     train_labels.append(u.bool_as_label(elmt.retweet_count > 0))
 
 # extracting test instances
+print("Extracting test instances...\n")
 test_instances = []
 test_labels    = []
 for elmt in train_data:
@@ -75,6 +78,7 @@ for elmt in train_data:
 
 # classification
 for c in classif_objs:
+    print("Classifying using %s...") % str(c)
     c.train(train_labels, train_instances)
     accuracy,_ = c.test(test_labels, test_instances)
     print('Accuracy %s: %.2f%%\n') % (str(c), accuracy)
