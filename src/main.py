@@ -14,6 +14,7 @@ from features import tweet_length_feature
 from features import hashtag_count_feature
 from features import user_mentions_count_feature
 from features import favorite_feature
+from features import has_url_feature
 
 import utils as u
 import math
@@ -41,7 +42,8 @@ feat_objs    = [followers_feature.FollowersFeature(),
                 tweet_length_feature.TweetLengthFeature(),
                 hashtag_count_feature.HashtagCountFeature(),
                 user_mentions_count_feature.UserMentionsCountFeature(),
-                favorite_feature.FavoriteFeature()]
+                favorite_feature.FavoriteFeature(),
+                has_url_feature.HasUrlFeature()]
 classif_objs = [nb.NaiveBayes(),
                 svm.SVM(),
                 #me.MaxEnt(),
