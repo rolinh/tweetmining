@@ -9,5 +9,5 @@ class SVMSigmoid(asvm.AbstractSVM):
         return "Support Vector Machine with sigmoid kernel"
 
     def train(self, labels, train_set):
-        super(SVMRBF, self).train_helper(labels, train_set, 'sigmoid')
+        super(SVMSigmoid, self).train_helper(labels, train_set, 'sigmoid')
 

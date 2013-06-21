@@ -9,5 +9,5 @@ class SVMLinear(asvm.AbstractSVM):
         return "Support Vector Machine with linear kernel"
 
     def train(self, labels, train_set):
-        super(SVMRBF, self).train_helper(labels, train_set, 'linear')
+        super(SVMLinear, self).train_helper(labels, train_set, 'linear')
 
