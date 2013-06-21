@@ -2,7 +2,7 @@ from classifiers import abstract_classifier as ac
 from classifiers import classifiers_helper as helper
 from nltk.classify import svm
 
-class SVM(ac.AbstractClassifier):
+class SVMNltk(ac.AbstractClassifier):
 
     def __repr__(self):
         return "<SVM>"

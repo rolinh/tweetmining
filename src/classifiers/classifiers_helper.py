@@ -1,10 +1,19 @@
 # coding: utf-8
 
 def format_for_nltk(labels, dataset):
-    """Format `labels` and `dataset` arrays to NLTK dataset format"""
+    """Format `labels` and `dataset` arrays to NLTK dataset format."""
     if len(labels) != len(dataset):
         return []
     return [(v, labels[i]) for i,v in enumerate(dataset)]
+
+def format_for_scikit(labels, dataset):
+    """Format `labels` and `dataset` array for Scikit dataset format."""
+    nd = []
+    l = [int(lab) for lab in labels]
+    for i in dataset:
+        tmp = [int(v) for v in i.values()]
+        nd.append(tmp)
+    return l,nd
 
 def accuracy(labels, predictions):
     """Compute the accuracy of predictions"""
@@ -15,7 +24,7 @@ def accuracy(labels, predictions):
     total   = 0
 
     for i,v in enumerate(predictions):
-        if labels[i] == v:
+        if labels[i] == str(v):
             correct += 1
         total += 1
 
@@ -33,3 +42,4 @@ def highest_bin_freq(ary):
         num_false += 1 if val == '0' else 0
 
     return '1' if num_true > num_false else '0'
+

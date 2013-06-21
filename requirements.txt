@@ -3,3 +3,5 @@ nltk
 twython
 svmlight
 numpy
+scipy
+scikit-learn

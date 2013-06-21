@@ -2,7 +2,7 @@
 # coding: utf-8
 
 from classifiers import naive_bayes as nb
-from classifiers import svm
+from classifiers import svm_rbf
 from classifiers import maxent as me
 from classifiers import decision_tree as dt
 from classifiers import majority_vote as mv
@@ -49,8 +49,8 @@ feat_objs    = [followers_count_feature.FollowersCountFeature(),
                 friends_count_feature.FriendsCountFeature(),
                 verified_account_feature.VerifiedAccountFeature()]
 classif_objs = [nb.NaiveBayes(),
-                svm.SVM(),
-                #me.MaxEnt(),
+                svm_rbf.SVMRBF(),
+                me.MaxEnt(),
                 dt.DecisionTree(),
                 mv.MajorityVote()]
 
