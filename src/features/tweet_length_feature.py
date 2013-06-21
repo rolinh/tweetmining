@@ -2,7 +2,7 @@ from features import abstract_feature as af
 
 import nltk
 
-class TweetLengthFeature(af.abstract_feature):
+class TweetLengthFeature(af.AbstractFeature):
 
     def __repr__(self):
         return "<TweetLengthFeature>"
