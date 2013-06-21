@@ -3,8 +3,12 @@
 
 from classifiers import naive_bayes as nb
 from classifiers import svm_rbf
-from classifiers import maxent as me
+from classifiers import svm_sigmoid
+from classifiers import svm_poly
+from classifiers import svm_linear
+#from classifiers import maxent as me
 from classifiers import decision_tree as dt
+from classifiers import decision_tree_scikit as dts
 from classifiers import majority_vote as mv
 
 from features import fake_feature
@@ -50,7 +54,11 @@ feat_objs    = [followers_count_feature.FollowersCountFeature(),
                 verified_account_feature.VerifiedAccountFeature()]
 classif_objs = [nb.NaiveBayes(),
                 svm_rbf.SVMRBF(),
-                me.MaxEnt(),
+                svm_rbf.SVMSigmoid(),
+                svm_rbf.SVMPoly(),
+                svm_rbf.SVMLinear(),
+                #me.MaxEnt(),
+                dts.DecisionTreeScikit(),
                 dt.DecisionTree(),
                 mv.MajorityVote()]
 
