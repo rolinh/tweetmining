@@ -8,8 +8,8 @@ from classifiers import decision_tree as dt
 from classifiers import majority_vote as mv
 
 from features import fake_feature
-from features import followers_feature
-from features import statuses_feature
+from features import followers_count_feature
+from features import statuses_count_feature
 from features import tweet_length_feature
 from features import hashtag_count_feature
 from features import user_mentions_count_feature
@@ -37,8 +37,8 @@ size       = int(math.floor(len(devset)*0.6666))
 train_data = devset[0:-size]
 test_data  = devset[-size+1:]
 
-feat_objs    = [followers_feature.FollowersFeature(),
-                statuses_feature.StatusesFeature(),
+feat_objs    = [followers_count_feature.FollowersCountFeature(),
+                statuses_count_feature.StatusesCountFeature(),
                 tweet_length_feature.TweetLengthFeature(),
                 hashtag_count_feature.HashtagCountFeature(),
                 user_mentions_count_feature.UserMentionsCountFeature(),

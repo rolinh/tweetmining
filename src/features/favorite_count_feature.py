@@ -9,5 +9,5 @@ class FavoriteCountFeature(af.AbstractFeature):
         return "Favorite Count Feature"
 
     def extract(self, tweet):
-        return "favorite_count_feature", tweet.favorite_count
+        return "favorite_count", tweet.favorite_count
 
