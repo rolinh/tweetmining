@@ -21,8 +21,8 @@ class AbstractSVM(ac.AbstractClassifier):
     def train(self, labels, train_set):
         pass
 
-    def train_helper(self, labels, train_set, kernel_name):
-        self.classifier = svm.SVC(kernel=kernel_name)
+    def train_helper(self, labels, train_set, kernel_name, deg=3):
+        self.classifier = svm.SVC(kernel=kernel_name, degree=deg)
         l,ts = helper.format_for_scikit(labels, train_set)
         self.classifier.fit(ts, l)
 
