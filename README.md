@@ -12,9 +12,10 @@ community.
 
 # SETUP
 
-This project uses python 2.7. Therefore, you obviously need python 2.7,
-pip and virtualenv are the recommended way to install all the required libraries
-in order to keep everything clean.
+This project uses `python` 2.7. Therefore, you obviously need `python` 2.7,
+`pip` and `virtualenv` are the recommended way to install all the required
+libraries in order to keep everything clean.
+To build the required packages, you also need `swig`
 
 
 So you first need to install pip and virtualenv if they are not already
