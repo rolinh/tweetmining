@@ -29,11 +29,11 @@ class User:
                 "statuses_count=%s,"
                 "verified=%s>") % (self.id,
                                    self.screen_name,
-                                   self-favourites_count,
+                                   self.favourites_count,
                                    self.followers_count,
                                    self.friends_count,
-                                   statuses_count,
-                                   verified)
+                                   self.statuses_count,
+                                   self.verified)
 
     def __str__(self):
         return ("User attributes:\n"
@@ -45,8 +45,8 @@ class User:
                 "statuses_count: %s\n"
                 "verified: %s\n") % (self.id,
                                      self.screen_name,
-                                     favourites_count,
-                                     followers_count,
-                                     friends_count,
-                                     statuses_count,
-                                     verified)
+                                     self.favourites_count,
+                                     self.followers_count,
+                                     self.friends_count,
+                                     self.statuses_count,
+                                     self.verified)
