@@ -11,7 +11,7 @@ import re
 import nltk
 
 def json_to_tweets_helper(data, bad_data):
-
+    """Helper for the `json_to_tweets` function"""
     tweet_collection = []
 
     for tw in data['statuses']:
@@ -149,3 +149,7 @@ def corpus_as_frequencies(corpus):
     freq = nltk.FreqDist(text)
 
     return hash(freq)
+
+def bool_as_label(boolean):
+    """Convert boolean into a '1' or '0' string"""
+    return '1' if boolean else '0'
