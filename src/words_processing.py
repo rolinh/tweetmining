@@ -35,20 +35,27 @@ def preprocessing(text):
     text = text.encode('ascii', 'ignore')
     return text
 
+
+def filter_tweet_words(tweet):
+    filtered_words = []
+    tokeep = ['JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS',
+              'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
+    text = preprocessing(tweet.text)
+    token = nltk.word_tokenize(text)
+    tags = nltk.pos_tag(token)
+
+    for tag in tags:
+        if tag[1] in tokeep:
+            filtered_words.append(tag[0])
+    return filtered_words
+
 def text_as_corpus(dataset):
     """Build a corpus (without unsignificant words) of from tweets"""
 
     corpus = []
-    tokeep = ['JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'NNPS',
-              'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
     for tweet in dataset:
-        text = preprocessing(tweet.text)
-        token = nltk.word_tokenize(text)
-        tags = nltk.pos_tag(token)
-
-        for tag in tags:
-            if tag[1] in tokeep:
-                corpus.append(tag[0])
+        for v in filter_tweet_words(tweet):
+            corpus.append(v)
 
     return ' '.join(corpus)
 
@@ -62,7 +69,7 @@ def corpus_as_occurrences(corpus):
     return occ
 
 def tf(data):
- """Computes TF from given data where `data` is a dictionary where key is
+    """Computes TF from given data where `data` is a dictionary where key is
     a word and value is its occurence. Returns a numpy array containing the
     tf_idf in the same order as values from `data`."""
     mat = numpy.asarray(data.values())
@@ -73,5 +80,5 @@ def tf_idf(data):
     a word and value is its occurence. Returns a numpy array containing the
     tf_idf in the same order as values from `data`."""
     mat = numpy.asarray(data.values())
-    return TfidfTransformer().fit_transform(mat)
+    return TfidfTransformer(use_idf=False).fit_transform(mat)
 

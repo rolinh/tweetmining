@@ -24,9 +24,11 @@ from features import favorite_count_feature
 from features import has_url_feature
 from features import friends_count_feature
 from features import verified_account_feature
+from features import tf_feature
+from features import tf_idf_feature
 
 import utils as u
-#import words_processing as wp
+import words_processing as wp
 
 import math
 import random
@@ -96,23 +98,23 @@ def cross_validation(dataset, feat_objs, classif_objs):
         start = i * subsize
         end   = start + subsize-1
 
-        train_data = dataset[start:end+1]
+        test_data = dataset[start:end+1]
 
         # handle test data position
         if start == 0:
-            test_data  = dataset[end+1:]
+            train_data  = dataset[end+1:]
         elif end == maxiter * subsize:
             # TODO CHECK THIS !
             if maxiter * subsize == length:
-                test_data  = dataset[:start-1]
+                train_data  = dataset[:start-1]
             else:
-                test_data = dataset[:start]
+                train_data = dataset[:start]
                 for v in dataset[end+1:]:
-                    test_data.append(v)
-        else
-            test_data  = dataset[0:start]
+                    train_data.append(v)
+        else:
+            train_data  = dataset[0:start]
             for v in dataset[end+1:]:
-                test_data.append(v)
+                train_data.append(v)
 
         acc, pred = classification_routine(train_data, test_data,
                                            feat_objs, classif_objs)
@@ -125,7 +127,10 @@ def main(args):
     """main function"""
     print("Collecting data...")
 
-    dataset = u.json_to_tweets('../data/dataset.json', False)
+    dataset = u.json_to_tweets('../data/devset.json', False)
+    words_occ = u.words_occ_to_dict('../data/devset_words_occurrence.txt')
+    words_tf = u.words_occ_to_tf(words_occ)
+    words_tf_idf = u.words_occ_to_tfidf(words_occ)
 
     #random.shuffle(devset)
 
@@ -137,7 +142,9 @@ def main(args):
                     favorite_count_feature.FavoriteCountFeature(),
                     has_url_feature.HasUrlFeature(),
                     friends_count_feature.FriendsCountFeature(),
-                    verified_account_feature.VerifiedAccountFeature()]
+                    verified_account_feature.VerifiedAccountFeature(),
+                    tf_feature.Tf(data=words_tf),
+                    tf_idf_feature.TfIdf(data=words_tf_idf)]
     classif_objs = [nb.NaiveBayes(),
                     nbs.NaiveBayesScikit(),
                     svm_rbf.SVMRBF(),

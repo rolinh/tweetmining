@@ -8,6 +8,43 @@ from twitter import entities as e
 import json
 import codecs
 import re
+import numpy
+
+import words_processing as wp
+
+def words_occ_to_dict(words_occ_file):
+    """Parses a file of words with their occurrency where each line is in the
+    form word:occurrency and insert them into a dictionary. The dictionary is
+    then returned."""
+    d = {}
+    f =  codecs.open(words_occ_file, 'r', 'utf-8')
+    for line in f:
+        k,v = line.split(':')
+        d[k] = int(v)
+    f.close()
+    return d
+
+def words_occ_to_tf(d):
+    """Returns a numpy array of the TF of each word from the dictionnary."""
+    d_tf = {}
+    ks = d.keys()
+    vs = wp.tf(d)
+
+    for i,v in enumerate(ks):
+        d_tf[v] = vs[0,i]
+
+    return d_tf
+
+def words_occ_to_tfidf(d):
+    """Returns a numpy array of the TF-IDF of each word from the dictionnary."""
+    d_tf_idf = {}
+    ks = d.keys()
+    vs = wp.tf_idf(d)
+
+    for i,v in enumerate(ks):
+        d_tf_idf[v] = vs[0,i]
+
+    return d_tf_idf
 
 def json_to_tweets_helper(data, bad_data):
     """Helper for the `json_to_tweets` function"""
