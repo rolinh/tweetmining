@@ -20,4 +20,4 @@ class TfIdf(af.AbstractFeature):
             if v > freq_max:
                 freq_max = v
 
-        return "tf_idf",v
+        return "tf_idf",freq_max
