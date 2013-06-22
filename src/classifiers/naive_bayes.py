@@ -15,7 +15,7 @@ class NaiveBayes(ac.AbstractClassifier):
         self.classifier = nb.NaiveBayesClassifier.train(data)
 
         # TODO use this in the main.py
-        self.classifier.show_most_informative_features(5)
+        #self.classifier.show_most_informative_features(5)
 
     def test(self, labels, test_set):
         if self.classifier == None:

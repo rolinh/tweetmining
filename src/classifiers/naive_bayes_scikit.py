@@ -1,6 +1,7 @@
 from classifiers import abstract_classifier as ac
 from classifiers import classifiers_helper as helper
-from sklearn.naive_bayes import GaussianNB
+#from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import BernoulliNB
 
 class NaiveBayesScikit(ac.AbstractClassifier):
 
@@ -11,7 +12,7 @@ class NaiveBayesScikit(ac.AbstractClassifier):
         return "Naive Bayes Scikit"
 
     def train(self, labels, train_set):
-        self.classifier = GaussianNB()
+        self.classifier = BernoulliNB()
         l,ts = helper.format_for_scikit(labels, train_set)
         self.classifier.fit(ts, l)
 
