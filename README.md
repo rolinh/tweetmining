@@ -36,4 +36,19 @@ command:
 
 And you should be all set.
 
+# FETCH NEW DATA
+
+Create a twitter app developper account. Then, rename
+`scripts/credentials.py.sample` to `scripts/credentials.py` and modify the
+credential values for valid ones.
+
+You can adapt search tag, language and output json file from
+`scripts/fetch_data.py` and then run the file to fetch a dataset.
+
+Remember that, as of Twitter API v1.1, API is limited and you will only be able
+to fetch a certain amount of data at once. Run the script several times on a
+several days period if you want to fetch enough data. Also remember that using
+free Twitter API, you can only fetch information in from a limited time period
+and not trough all Twitter history. You gotta pay for it if you want more... :(
+
 <!-- vim: set filetype=markdown textwidth=80 -->
