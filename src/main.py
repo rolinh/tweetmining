@@ -2,11 +2,14 @@
 # coding: utf-8
 
 from classifiers import naive_bayes as nb
+from classifiers import naive_bayes_scikit as nbs
 from classifiers import svm_rbf
 from classifiers import svm_sigmoid
 from classifiers import svm_poly
 from classifiers import svm_linear
 #from classifiers import maxent as me
+from classifiers import maxent_scikit as mes
+from classifiers import lda
 from classifiers import decision_tree as dt
 from classifiers import decision_tree_scikit as dts
 from classifiers import majority_vote as mv
@@ -53,11 +56,14 @@ feat_objs    = [followers_count_feature.FollowersCountFeature(),
                 friends_count_feature.FriendsCountFeature(),
                 verified_account_feature.VerifiedAccountFeature()]
 classif_objs = [nb.NaiveBayes(),
+                nbs.NaiveBayesScikit(),
                 svm_rbf.SVMRBF(),
-                svm_sigmoid.SVMSigmoid(),
-                svm_poly.SVMPoly(),
-                svm_linear.SVMLinear(),
+                #svm_sigmoid.SVMSigmoid(),
+                #svm_poly.SVMPoly(),
+                #svm_linear.SVMLinear(),
                 #me.MaxEnt(),
+                lda.LDA(),
+                mes.MaxEntScikit(),
                 dts.DecisionTreeScikit(),
                 dt.DecisionTree(),
                 mv.MajorityVote()]
