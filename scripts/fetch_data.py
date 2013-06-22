@@ -9,6 +9,13 @@ import sys
 
 from twython import Twython, TwythonError
 
+################################################################################
+# Configure values below to your needs
+search_tag='shampoo'
+language='en'
+dataset='../data/dataset.json'
+################################################################################
+
 min_id = 1000000000000000000000000000000000000000000000000000000000000000000000
 
 # Twitter API >= v1.1 requires an authentification... even to fetch public data!
@@ -17,12 +24,12 @@ twitter = Twython(c.APP_CONSUMER_KEY,
                   c.OAUTH_TOKEN,
                   c.OAUTH_TOKEN_SECRET)
 
-fp = codecs.open('../data/devset.json', 'a', 'utf-8')
-for i in range(720):
+fp = codecs.open(dataset, 'a', 'utf-8')
+for i in range(180):
     try:
-        result = twitter.search(q='shampoo',
+        result = twitter.search(q=search_tag,
                                 count=100,
-                                lang='en',
+                                lang=language,
                                 max_id=min_id)
     except TwythonError as e:
         print(e)
