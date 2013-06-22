@@ -1,0 +1,154 @@
+\documentclass{sigchi}
+
+% Use this command to override the default ACM copyright statement (e.g. for
+% preprints).
+% Consult the conference website for the camera-ready copyright statement.
+\toappear{
+	Copyright, 2013, Robin Hahling and Kevin Gillieron
+}
+
+% Arabic page numbers for submission.
+% Remove this line to eliminate page numbers for the camera ready copy
+\pagenumbering{arabic}
+
+
+% Load basic packages
+\usepackage{balance}  % to better equalize the last page
+\usepackage{graphics} % for EPS, load graphicx instead
+%\usepackage{times}    % comment if you want LaTeX's default font
+\usepackage{url}      % llt: nicely formatted URLs
+
+% llt: Define a global style for URLs, rather that the default one
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\bf\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+
+% To make various LaTeX processors do the right thing with page size.
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+% Make sure hyperref comes last of your loaded packages,
+% to give it a fighting chance of not being over-written,
+% since its job is to redefine many LaTeX commands.
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+pdftitle={Mining tweets ti predict their popularity},
+pdfauthor={Texlive},
+pdfkeywords={datamining, twitter, tweet, classification, prediction, popularity},
+bookmarksnumbered,
+pdfstartview={FitH},
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black,
+breaklinks=true,
+}
+
+% create a shortcut to typeset table headings
+\newcommand\tabhead[1]{\small\textbf{#1}}
+
+
+% End of preamble. Here it comes the document.
+\begin{document}
+
+\title{Mining tweets to predict their popularity}
+
+\numberofauthors{2}
+\author{
+  \alignauthor Robin Hahling\\
+    \affaddr{University of Geneva, Computer Science Department}\\
+    \affaddr{Carouge, GE, CH}\\
+    \email{hahlinr0@etu.unige.ch}\\
+  \alignauthor Kevin Gillieron\\
+    \affaddr{University of Geneva, Computer Science Department}\\
+    \affaddr{Carouge, GE, CH}\\
+    \email{gilliek0@etu.unige.ch}\\
+}
+
+\maketitle
+
+\begin{abstract}
+\textit{
+In this paper we experiment several classifiers and features extracted from
+tweets in order to predict if a tweet will be retwitted or not.
+To do so, we analyzed data extracted from Twitter related to the keyword
+"shampoo", thus related to a community around this theme.
+Our approach focuses on extracting relevant features from tweets and using them
+into several different classifiers such as Support Vector Machine, Decision
+Tree, Linear Discriminant Analysis, Maximum Entropy and Naive Bayes.
+We validate our approach by performing a cross-validation and comparing the
+classifiers in an algorithm tournament. The significance of our result is
+validated by the McNemar test with Bonferroni adjustment.
+Our result allows us to predict if a tweet will be retweeted with an accuracy as
+high as 99.88\%.
+}
+\end{abstract}
+
+\section{Introduction}
+
+% \begin{figure}[!h]
+% \centering
+%  \includegraphics[width=0.9\columnwidth]{Figure1}
+% \caption{With Caption Below, be sure to have a good resolution image
+%   (see item D within the preparation instructions).}
+% \label{fig:figure1}
+% \end{figure}
+% 
+% \begin{table}
+%   \centering
+%   \begin{tabular}{|c|c|c|}
+%     \hline
+%     \tabhead{Objects} &
+%     \multicolumn{1}{|p{0.3\columnwidth}|}{\centering\tabhead{Caption --- pre-2002}} &
+%     \multicolumn{1}{|p{0.4\columnwidth}|}{\centering\tabhead{Caption --- 2003 and afterwards}} \\
+%     \hline
+%     Tables & Above & Below \\
+%     \hline
+%     Figures & Below & Below \\
+%     \hline
+%   \end{tabular}
+%   \caption{Table captions should be placed below the table.}
+%   \label{tab:table1}
+% \end{table}
+
+\section{Conclusion}
+
+
+% Balancing columns in a ref list is a bit of a pain because you
+% either use a hack like flushend or balance, or manually insert
+% a column break.  http://www.tex.ac.uk/cgi-bin/texfaq2html?label=balance
+% multicols doesn't work because we're already in two-column mode,
+% and flushend isn't awesome, so I choose balance.  See this
+% for more info: http://cs.brown.edu/system/software/latex/doc/balance.pdf
+%
+% Note that in a perfect world balance wants to be in the first
+% column of the last page.
+%
+% If balance doesn't work for you, you can remove that and
+% hard-code a column break into the bbl file right before you
+% submit:
+%
+% http://stackoverflow.com/questions/2149854/how-to-manually-equalize-columns-
+% in-an-ieee-paper-if-using-bibtex
+%
+% Or, just remove \balance and give up on balancing the last page.
+%
+\balance
+
+% If you want to use smaller typesetting for the reference list,
+% uncomment the following line:
+% \small
+\bibliographystyle{acm-sigchi}
+\bibliography{references}
+\nocite{*}
+
+\end{document}
