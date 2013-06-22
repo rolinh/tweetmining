@@ -1,7 +1,8 @@
 pyyaml
+numpy
+matplotlib
 nltk
 twython
 svmlight
-numpy
 scipy
 scikit-learn
