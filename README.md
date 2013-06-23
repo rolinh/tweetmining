@@ -12,29 +12,28 @@ community.
 
 # SETUP
 
-This project uses `python` 2.7. Therefore, you obviously need `python` 2.7,
+This project uses `python` 2.7 thus  you obviously need it.
 `pip` and `virtualenv` are the recommended way to install all the required
 libraries in order to keep everything clean.
-To build the required packages, you also need `swig` and `gcc-fortran`.
+To build the required packages, you also need `gcc` (or another C-compiler),
+`gcc-fortran` (or another Fortran compiler) and `swig`.
+Once the requirements are met, you can process as follow:
 
-
-So you first need to install pip and virtualenv if they are not already
-installed on your system.
-
-Set up a virtual environment first:
+  * Set up a virtual environment first:
 
     virtualenv -p python2.7 .
 
-And activate it:
+  * And activate it:
 
     source bin/activate
 
-Then, to install the required libraries, issue the following
-command:
+  * Then, to install the required libraries, issue the following commands:
 
+    pip install numpy
     pip install -r requirements.txt
 
-And you should be all set.
+And you should be all set. Note that `numpy` needs to be installed beforehand
+otherwise `matplotlib` and `scipy` will not build.
 
 # FETCH NEW DATA
 
