@@ -1,1 +1,24 @@
 \section{Introduction}
+
+Twitter is a microblogging system in which users cand send, reply, or forward
+(retweet), short messages up to 140 characters between them. Typically, users
+are inter-connected by messages and they form social network communities in
+which different topics are discussed. Messages which are retweeted several times
+are thus more likely to represent important topics that people like to discuss.
+In this project, we analyzed twitter data and built models for solving 
+the following task: to predict if a tweet will be retweeted or not, i.e. to 
+predict if a tweet can be considered as popular or not insight a community.
+
+To do so, we had to develop your own data mining tool and propose an
+approach to solve the problem.
+
+Our analysis was made on a recent collection of $42960$ tweets, all of which 
+are related to the global topic of \textit{shampoo}.
+
+Each tweet is characterized by some features which we used, along with others 
+we created, mostly built on the tweet's content, to compute our prediction.
+
+Our approach was to first extract informative features from the tweets and then 
+use them into various classifiers to do our prediction. We determined which 
+features were the most informative and which classifier performed the best by 
+doing algorithm tournament.
