@@ -263,22 +263,23 @@ def main(classification=True,
                     is_a_retweet_feature.IsARetweetFeature(),
                     is_a_reply_feature.IsAReplyFeature(),
                     followers_count_feature.FollowersCountFeature(),
-                    #tweet_age_feature.TweetAgeFeature(),
+                    tweet_age_feature.TweetAgeFeature(),
                     tweet_length_feature.TweetLengthFeature(),
-                    #statuses_count_feature.StatusesCountFeature(),
-                    #hashtag_count_feature.HashtagCountFeature(),
-                    # hashtag_popularity_feature.HashtagPopularityFeature(),
-                    #user_mentions_count_feature.UserMentionsCountFeature(),
-                    #favorite_count_feature.FavoriteCountFeature(),
-                    #has_url_feature.HasUrlFeature(),
-                    #friends_count_feature.FriendsCountFeature(),
-                    #verified_account_feature.VerifiedAccountFeature(),
-                    #tf_feature.Tf(data=words_tf)
-                    #tf_idf_feature.TfIdf(data=words_tf_idf)
+                    statuses_count_feature.StatusesCountFeature(),
+                    hashtag_count_feature.HashtagCountFeature(),
+                    #hashtag_popularity_feature.HashtagPopularityFeature(),
+                    user_mentions_count_feature.UserMentionsCountFeature(),
+                    favorite_count_feature.FavoriteCountFeature(),
+                    has_url_feature.HasUrlFeature(),
+                    friends_count_feature.FriendsCountFeature(),
+                    verified_account_feature.VerifiedAccountFeature(),
+                    tf_feature.Tf(data=words_tf),
+                    tf_idf_feature.TfIdf(data=words_tf_idf)
                     ]
 
     # list of objects containing the classifier classes
-    classif_objs = [#nb.NaiveBayes(plot_roc),
+    classif_objs = [
+                    #nb.NaiveBayes(plot_roc),
                     nbs.NaiveBayesScikit(plot_roc),
                     #svm_rbf.SVMRBF(plot_roc),
                     #svm_sigmoid.SVMSigmoid(plot_roc),
