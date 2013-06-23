@@ -71,7 +71,10 @@ given by the \emph{User} object.
 The feature number 11 indicates if the tweet contains an URL or not. The 
 list of URL is provided by the \emph{Tweet entities} object.
 
-Since the three last features did not give good results, they have been 
-removed. The TF (Term Frequency) and the Tweet age were not significant while 
-the TF-IDF (Term Frequency - Inverse Document Frequency) feature did not work 
-due to a bug in the \emph{scikit} library.
+The feature number 12 uses the TF (Term Frequency). The words occurrences 
+used to compute the TF are calculated as explained in the previous section.
+
+Since the two last features did not give good results, they have been 
+removed. The Tweet age were not significant while the TF-IDF (Term Frequency - 
+Inverse Document Frequency) feature did not work due to a bug in the 
+\emph{scikit} library.
