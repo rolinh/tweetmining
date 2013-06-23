@@ -1,4 +1,5 @@
 \section{Features description}
+\label{sec:features}
 
 In this section, we describe the features that are relevant for our work and 
 mention the other features that have been removed from the final experiment. The 
@@ -51,7 +52,7 @@ The fifth feature gives the number of other tweets (including retweets) issued
 by the author. This information is provided by the attribute "statuses\_count" 
 of the \emph{User} object.
 
-The feature number six indicates if the author of the tweet has a verified 
+The feature number 6 indicates if the author of the tweet has a verified 
 account. Such accounts establish the authenticity of the user's identity. In 
 our case, this means that the author of the tweet is famous and then he will be 
 probably retweeted.
@@ -60,14 +61,14 @@ The seventh feature is the number of friends (aka the number users following
 the author). This count is provided by the \emph{User} object. The number of 
 friends is strongly related to the number of retweets.
 
-The feature number eight counts the number of hashtags from the \emph{Tweet} 
+The feature number 8 counts the number of hashtags from the \emph{Tweet} 
 object and the feature number nine is the number of words of the tweet.
 
 The tenth feature gives the number of users mentionned with a "@username" in 
 the tweet. This information is calculated from the list of "user\_mentions" 
 given by the \emph{User} object.
 
-The feature number eleven indicates if the tweet contains an URL or not. The 
+The feature number 11 indicates if the tweet contains an URL or not. The 
 list of URL is provided by the \emph{Tweet entities} object.
 
 Since the three last features did not give good results, they have been 
