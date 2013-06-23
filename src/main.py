@@ -31,6 +31,7 @@ import utils as u
 import words_processing as wp
 
 from sklearn import metrics
+from multiprocessing import Process
 
 import math
 import random
@@ -193,8 +194,8 @@ def algorithm_tournament(instances, full_labels, classif_objs):
                 scores[i1] += 0.5
                 scores[i2] += 0.5
 
-            print('local table :')
-            print(local_table)
+            # print('local table :')
+            # print(local_table)
             # update contingency table
             contingency_table[0][0] += local_table[0][0]
             contingency_table[0][1] += local_table[0][1]
@@ -204,8 +205,8 @@ def algorithm_tournament(instances, full_labels, classif_objs):
         # perform mcnemar test
         signi = u.mcnemar(contingency_table)
 
-        print('Contingency table :')
-        print(contingency_table)
+        # print('Contingency table :')
+        # print(contingency_table)
 
         winner = 'tie !'
         if contingency_table[0][1] > contingency_table[1][0]:
@@ -228,7 +229,8 @@ def main(classification=True,
          devset=False,
          randomize=False,
          verbose=False,
-         plot_roc=False):
+         plot_roc=False,
+         multithreading=False):
     """main function"""
 
     if devset:
@@ -306,14 +308,41 @@ def main(classification=True,
         train_labels = labels[0:-size+1]
         test_labels  = labels[-size+1:]
 
-        classification_routine(train_data, test_data, train_labels,
-                               test_labels, classif_objs)
+        if multithreading:
+            c_thread = Process(target=classification_routine,
+                               args=(train_data, test_data, train_labels,
+                                     test_labels, classif_objs))
+            print("Starting classification thread...")
+            c_thread.start()
+        else:
+            classification_routine(train_data, test_data, train_labels,
+                                   test_labels, classif_objs)
 
     if x_validation:
-        cross_validation(instances, labels, classif_objs)
+        if multithreading:
+            xv_thread = Process(target=cross_validation,
+                                args=(instances, labels, classif_objs))
+            print("Starting cross-validation thread...")
+            xv_thread.start()
+        else:
+            cross_validation(instances, labels, classif_objs)
 
     if tournament:
-        algorithm_tournament(instances, labels, classif_objs)
+        if multithreading:
+            t_thread = Process(target=algorithm_tournament,
+                               args=(instances, labels, classif_objs))
+            print("Starting tournament thread...")
+            t_thread.start()
+        else:
+            algorithm_tournament(instances, labels, classif_objs)
+
+    if multithreading:
+        if classification:
+            c_thread.join()
+        if x_validation:
+            xv_thread.join()
+        if tournament:
+            t_thread.join()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -333,6 +362,12 @@ if __name__ == "__main__":
                         action='store_true',
                         default=False,
                         help='use development dataset')
+    parser.add_argument('-m', '--multithreading',
+                        action='store_true',
+                        default=False,
+                        help='activate multithreading. It should be faster on a\
+                        machine with multiple cpu/cores but the messages \
+                        printed by the program will be random.')
     parser.add_argument('-r', '--randomize',
                         action='store_true',
                         default=False,
@@ -370,7 +405,8 @@ if __name__ == "__main__":
              args.devset,
              args.randomize,
              args.verbose,
-             args.plot_roc)
+             args.plot_roc,
+             args.multithreading)
     elif args.all:
         main(True,
              True,
@@ -378,7 +414,8 @@ if __name__ == "__main__":
              args.devset,
              args.randomize,
              args.verbose,
-             args.plot_roc)
+             args.plot_roc,
+             args.multithreading)
     else:
         main(args.classification,
              args.tournament,
@@ -386,6 +423,7 @@ if __name__ == "__main__":
              args.devset,
              args.randomize,
              args.verbose,
-             args.plot_roc)
+             args.plot_roc,
+             args.multithreading)
 
     sys.exit(0)
