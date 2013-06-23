@@ -26,6 +26,7 @@ from features import friends_count_feature
 from features import verified_account_feature
 from features import tf_feature
 from features import tf_idf_feature
+from features import is_a_retweet_feature
 
 import utils as u
 import words_processing as wp
@@ -257,6 +258,7 @@ def main(classification=True,
 
     # list of objects containing the feature classes
     feat_objs    = [
+                    is_a_retweet_feature.IsARetweetFeature(),
                     followers_count_feature.FollowersCountFeature(),
                     statuses_count_feature.StatusesCountFeature(),
                     tweet_length_feature.TweetLengthFeature(),
