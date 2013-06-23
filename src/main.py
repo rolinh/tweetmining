@@ -221,7 +221,7 @@ def algorithm_tournament(instances, full_labels, classif_objs):
     # tournament results
     print('\nTournament results :')
     for i,v in enumerate(scores):
-        print('%s: %f') % (classif_objs[i], v)
+        print('%s: %.1f') % (classif_objs[i], v)
 
 def main(classification=True,
          tournament=False,
@@ -274,7 +274,7 @@ def main(classification=True,
     # list of objects containing the classifier classes
     classif_objs = [#nb.NaiveBayes(plot_roc),
                     nbs.NaiveBayesScikit(plot_roc),
-                    svm_rbf.SVMRBF(plot_roc),
+                    # svm_rbf.SVMRBF(plot_roc),
                     #svm_sigmoid.SVMSigmoid(plot_roc),
                     #svm_poly.SVMPoly(plot_roc),
                     #svm_linear.SVMLinear(plot_roc),
