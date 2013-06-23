@@ -1,1 +1,58 @@
 \section{Features description}
+
+In this section, we first describe the features that are relevant for our 
+work, and then we discuss about their usefulness in the classification process. 
+We finally mention the other features that have been removed from the final 
+experiment. The table \ref{tab:features} lists all the features.
+
+\begin{table}[!h]
+ \centering
+ \begin{tabular}{|c|l|}
+  \hline
+  \tabhead{\#} &
+  \multicolumn{1}{|p{0.7\columnwidth}|}{\centering\tabhead{Features used}} \\
+  \hline
+  1  & is the tweet a retweet \\
+  2  & is the tweet a reply \\
+  3  & number of followers \\
+  4  & number of times "favorited" \\
+  5  & number of tweets issued by the author \\
+  6  & is the author a verfied account \\
+  7  & number of user's friends \\
+  8  & number of hashtags \\
+  9  & number of words in the tweet \\
+  10 & number of users mentionned \\
+  11 & has an URL \\
+  12 & TF feature \\
+  13 & TF-IDF feature \\
+  14 & tweet's age \\
+  \hline
+ \end{tabular}
+ \caption{This table lists the features used in our work. Their order has no 
+  specific meaning.}
+ \label{tab:features}
+\end{table}
+
+The first feature indicates if a tweet is a retweet or not. This information is 
+extracted from the text of the tweet which appears as a citation of the 
+original tweet with the form "RT @username:". 
+
+The feature number 2 determines whether a tweet is a reply to another 
+tweet.This information is provided by the attribute "in\_reply\_to\_user\_id" 
+which contains a non-null value if the tweet is a reply.
+
+The third feature counts the number of followers the author has. This value 
+is given by the \emph{User} object attached to a tweet.
+
+The feature number 4 indicates how many times a tweet has been "favorited" by 
+other users. This count is given by the attribute "favorite\_count"  of a tweet 
+object.
+
+The fifth feature gives the number of other tweets (including retweets) issued 
+by the author. This information is provided by the attribute "statuses\_count" 
+of the \emph{User} object.
+
+The feature number six indicates if the author of the tweet has a verified 
+account. Such accounts establish the authenticity of the user's identity. In 
+our case, this means that the author of the tweet is famous and then he will be 
+probably retweeted.
