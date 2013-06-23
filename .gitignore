@@ -1,6 +1,7 @@
 # general ignore pattern
 *.swp
 *.pyc
+*.directory
 
 # files
 scripts/credentials.py
