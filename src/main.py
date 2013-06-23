@@ -34,37 +34,30 @@ import math
 import random
 import sys
 
-def classification_routine(train_data, test_data, feat_objs, classif_objs):
-    """run the classification process with feature extraction stuff and
-    prediction. It returns a coningency table and a list of accuracies"""
+def extract_train_instances(dataset, feat_objs):
+    """Extract instances from the data set and returns the instances as an
+    array of dictionary and the list of labels"""
 
-    # extracting training instances
-    print("Extracting training instances...")
-    train_instances = []
-    train_labels    = []
-    for elmt in train_data:
+    # extracting features from data set
+    print("Extracting features from data set...")
+    instances = []
+    labels    = []
+    for elmt in dataset:
         features = {}
 
         for f in feat_objs:
             feat,val = f.extract(elmt)
             features[feat] = val
 
-        train_instances.append(features)
-        train_labels.append(u.bool_as_label(elmt.retweet_count > 0))
+        instances.append(features)
+        labels.append(u.bool_as_label(elmt.retweet_count > 0))
 
-    # extracting test instances
-    print("Extracting test instances...\n")
-    test_instances = []
-    test_labels    = []
-    for elmt in train_data:
-        features = {}
+    return instances, labels
 
-        for f in feat_objs:
-            feat,val = f.extract(elmt)
-            features[feat] = val
-
-        test_instances.append(features)
-        test_labels.append(u.bool_as_label(elmt.retweet_count > 0))
+def classification_routine(train_instances, test_instances, classif_objs):
+    """Run the classification process with feature extraction stuff and
+    prediction. It returns a list of accuracies and a list of lists of
+    predictions."""
 
     # classification
     accuracies_list  = []
@@ -79,18 +72,24 @@ def classification_routine(train_data, test_data, feat_objs, classif_objs):
 
     return accuracies_list, predictions_list
 
-def cross_validation(dataset, feat_objs, classif_objs):
+def cross_validation(instances, labels, classif_objs):
+    dataset    = []
+    [dataset.append(v) for v in test_instances]
+    [dataset.append(v) for v in train_instances]
+
     length     = len(dataset)
     subsize    = int(math.floor(length*0.1))
     maxiter    = int(math.floor(float(length) / float(subsize)))
 
     print('Calculating cross-validation...\n')
-
     print('Length:\t%d')  % (length)
     print('Subsize:\t%d') % (subsize)
     print('Maxiter:\t%d') % (maxiter)
-
     print('#####################################################')
+
+    r = range(0, len(classif_objs))
+    average_accuracies = [0.0 for i in r]
+    all_predictions    = []
 
     for i in range(0,maxiter):
         print('step %d/%d\n') % (i+1, maxiter)
@@ -100,7 +99,7 @@ def cross_validation(dataset, feat_objs, classif_objs):
 
         test_data = dataset[start:end+1]
 
-        # handle test data position
+        # handle train data position
         if start == 0:
             train_data  = dataset[end+1:]
         elif end == maxiter * subsize:
@@ -118,10 +117,88 @@ def cross_validation(dataset, feat_objs, classif_objs):
 
         acc, pred = classification_routine(train_data, test_data,
                                            feat_objs, classif_objs)
+        all_predictions.append(pred)
+
+        # update average accuracies
+        for i,v in enumerate(acc):
+            average_accuracies[i] += v
+
         print('accuracy -> ')
         for i,v in enumerate(acc):
             print('\t%s: %.2f%%') % (classif_objs[i], v)
         print('#####################################################')
+
+    # average the accuracies
+    for i,v in enumerate(average_accuracies):
+        average_accuracies[i] = float(v) / float(maxiter)
+
+    return average_accuracies, all_predictions
+
+def algorithm_tournament(instances, labels, feat_objs, classif_objs):
+    """Algorithm tournament"""
+
+    acc, pred = cross_validation(dataset, feat_objs, classif_objs)
+    indices   = range(0, len(classif_objs))
+    scores    = [0 for i in range(0, len(classif_objs))]
+
+    average_acc, all_predic = cross_validation(instances, labels, classif_objs)
+
+    for ind in itertools.combinations(indices, length):
+        i1 = ind[0]
+        i2 = ind[1]
+        c1 = str(classif_objs[i1])
+        c2 = str(classif_objs[i2])
+
+        contingency_table  = [[0, 0], [0, 0]]
+
+        for turn in all_predic:
+            res1 = turn[i1]
+            res2 = turn[i2]
+
+            local_table = [[0, 0], [0, 0]]
+
+            for i in range(0, len(res1)):
+                if res1[i] == res2[i] and res1[i] == labels[i]:
+                    local_table[1][1] += 1
+                elif res1[i] == res2[i] and res1[i] != labels[i]:
+                    local_table[0][0] += 1
+                elif res1[i] != labels[i]:
+                    local_table[0][1] += 1
+                else:
+                    local_table[1][0] += 1
+
+            # give score
+            if local_table[0][1] > local_table[0][1]:
+                score[i2] += 1
+            elif local_table[0][1] < local_table[0][1]:
+                score[i1] += 1
+            else:
+                score[i1] += 0.5
+                score[i2] += 0.5
+
+            # update contingency table
+            contingency_table[0][0] += local_table[0][0]
+            contingency_table[0][1] += local_table[0][1]
+            contingency_table[1][0] += local_table[1][0]
+            contingency_table[1][1] += local_table[1][1]
+
+        # perform mcnemar test
+        signi = u.mcnemar(contingency_table)
+
+        winner = 'egality !'
+        if contingency_table[0][1] > contingency_table[0][1]
+            winner = str(c2)
+        elif contingency_table[0][1] < contingency_table[0][1]
+            winner = str(c1)
+        print('%s vs %s') % (str(c1), str(c2))
+        print('The winner is : %s') % (winner)
+        print('McNemar test: %s') % (u.mcnemar(contingency_table))
+        print('################')
+
+    # tournament results
+    print('\nTournament results :')
+    for i,v in enumerate(score):
+        print('%s: %f') % (classif_objs[i], v)
 
 def main(args):
     """main function"""

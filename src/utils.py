@@ -5,6 +5,8 @@ from twitter import url as u
 from twitter import user_mention as um
 from twitter import entities as e
 
+from scipy import stats
+
 import json
 import codecs
 import re
@@ -164,3 +166,35 @@ def tag_as_retweet(dataset):
 def bool_as_label(boolean):
     """Convert boolean into a '1' or '0' string"""
     return '1' if boolean else '0'
+
+def mcnemar(contingency_table):
+    """Perform the McNemar test and return the Chi-square value and
+    the p-value.
+
+    The contingency must have the following format (array of array):
+
+    Let A and B be the two classifiers we want to compare.
+
+             |                   |                    |
+             |         F         |         T          |
+             |                   |                    |
+    ---------------------------------------------------
+             |       # of        | # of misclssified  |
+        F    |   misclassified   | by A and # of well |
+             |    by A and B     | classified by B    |
+    ---------------------------------------------------
+             |# of wellclassified|       # of         |
+        T    |by A and           |   wellclassified   |
+             |misclassified by B |     by A and B     |
+    ---------------------------------------------------
+    """
+
+    ff = contingency_table[0][0]
+    ft = contingency_table[0][1]
+    tf = contingency_table[1][0]
+    tt = contingency_table[1][1]
+
+    chi_square = float((abs(ft-tf)-1)**2)/float(ft+tf)
+    p_value    = 1 - stats.chi2.cdf(chi_square, 1, 0)
+
+    return chi_square, p_value
