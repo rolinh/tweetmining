@@ -3,8 +3,6 @@
 import sys
 import os
 
-from pyroc import *
-
 def format_for_nltk(labels, dataset):
     """Format `labels` and `dataset` arrays to NLTK dataset format."""
     if len(labels) != len(dataset):
@@ -50,4 +48,5 @@ def highest_bin_freq(ary):
         num_false += 1 if val == '0' else 0
 
     return '1' if num_true > num_false else '0'
+
 
