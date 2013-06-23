@@ -22,7 +22,9 @@ report/*.d
 report/*.fls
 report/*.log
 report/*.make
+report/*.make.temp
 report/*.out
+report
 report/sections/*.aux
 report/main.pdf
 
