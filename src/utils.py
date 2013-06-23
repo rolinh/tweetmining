@@ -12,6 +12,7 @@ import codecs
 import re
 import numpy
 import math
+import nltk
 
 import words_processing as wp
 

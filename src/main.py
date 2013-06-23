@@ -295,6 +295,10 @@ def main(classification=True,
     # extract features and build a list of instances
     instances, labels = extract_instances(dataset, feat_objs)
 
+    print("\nEntropy of the labels:")
+    print(u.entropy(labels))
+    print("")
+
     if classification:
         size         = int(math.floor(len(instances)*0.25))
         train_data   = instances[0:-size+1]
