@@ -1,5 +1,4 @@
 pyyaml
-numpy
 matplotlib
 nltk
 twython
