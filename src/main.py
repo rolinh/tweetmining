@@ -208,8 +208,8 @@ def algorithm_tournament(instances, full_labels, classif_objs):
         # perform mcnemar test
         signi = u.mcnemar(contingency_table)
 
-        # print('Contingency table :')
-        # print(contingency_table)
+        print('Contingency table :')
+        print(contingency_table)
 
         winner = 'tie !'
         if contingency_table[0][1] > contingency_table[1][0]:
@@ -274,7 +274,7 @@ def main(classification=True,
                     friends_count_feature.FriendsCountFeature(),
                     verified_account_feature.VerifiedAccountFeature(),
                     tf_feature.Tf(data=words_tf),
-                    tf_idf_feature.TfIdf(data=words_tf_idf)
+                    # tf_idf_feature.TfIdf(data=words_tf_idf)
                     ]
 
     # list of objects containing the classifier classes
@@ -286,11 +286,11 @@ def main(classification=True,
                     #svm_poly.SVMPoly(plot_roc),
                     #svm_linear.SVMLinear(plot_roc),
                     #me.MaxEnt(plot_roc),
-                    lda.LDA(plot_roc),
                     mes.MaxEntScikit(plot_roc),
                     dts.DecisionTreeScikit(plot_roc),
                     #dt.DecisionTree(plot_roc),
-                    mv.MajorityVote(plot_roc)
+                    mv.MajorityVote(plot_roc),
+                    lda.LDA(plot_roc)
                     ]
     if verbose:
         print("\nFeatures activated:")
