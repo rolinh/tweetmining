@@ -11,6 +11,7 @@ import json
 import codecs
 import re
 import numpy
+import math
 
 import words_processing as wp
 
@@ -200,3 +201,8 @@ def mcnemar(contingency_table):
     p_value    = 1 - stats.chi2.cdf(chi_square, 1, 0)
 
     return chi_square, p_value
+
+def entropy(labels):
+    freqdist = nltk.FreqDist(labels)
+    probs = [freqdist.freq(l) for l in freqdist]
+    return -sum([p * math.log(p, 2) for p in probs])
