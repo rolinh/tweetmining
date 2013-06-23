@@ -24,8 +24,8 @@ class DecisionTreeScikit(ac.AbstractClassifier):
             feat_list = test_set[0].keys()
             # FIXME: handle output file name
             outfile = '../data/dt.dot'
-            print("ROC curve unavailable for this classifier. \
-                  Creating a Decision Tree plot instead in: %s") % (outfile)
+            print("ROC curve unavailable for this classifier.\n" +
+                  "Creating a Decision Tree plot instead in: %s") % (outfile)
             tree.export_graphviz(self.classifier, outfile, feat_list)
 
         return helper.accuracy(labels, predictions), predictions
