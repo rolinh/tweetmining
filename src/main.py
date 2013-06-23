@@ -33,6 +33,7 @@ import words_processing as wp
 import math
 import random
 import sys
+import argparse
 
 def classification_routine(train_data, test_data, feat_objs, classif_objs):
     """run the classification process with feature extraction stuff and
@@ -84,8 +85,6 @@ def cross_validation(dataset, feat_objs, classif_objs):
     subsize    = int(math.floor(length*0.1))
     maxiter    = int(math.floor(float(length) / float(subsize)))
 
-    print('Calculating cross-validation...\n')
-
     print('Length:\t%d')  % (length)
     print('Subsize:\t%d') % (subsize)
     print('Maxiter:\t%d') % (maxiter)
@@ -123,21 +122,41 @@ def cross_validation(dataset, feat_objs, classif_objs):
             print('\t%s: %.2f%%') % (classif_objs[i], v)
         print('#####################################################')
 
-def main(args):
+def main(classification=True,
+         tournament=False,
+         x_validation=False,
+         devset=False,
+         randomize=False,
+         verbose=False):
     """main function"""
-    print("Collecting data...")
 
-    dataset = u.json_to_tweets('../data/devset.json', False)
-    words_occ = u.words_occ_to_dict('../data/devset_words_occurrence.txt')
+    if devset:
+        print("Using development dataset")
+        set_file = '../data/devset.json'
+        wocc_file = '../data/devset_words_occurrence.txt'
+    else:
+        print("Using full dataset")
+        set_file = '../data/dataset.json'
+        wocc_file = '../data/dataset_words_occurrence.txt'
+
+    print("Collecting data...")
+    dataset = u.json_to_tweets(set_file, False)
+    print("Loading words occurrencies...")
+    words_occ = u.words_occ_to_dict(wocc_file)
+    print("Computing term frequency...")
     words_tf = u.words_occ_to_tf(words_occ)
+    print("Computing term frequency - inverse document frequency...")
     words_tf_idf = u.words_occ_to_tfidf(words_occ)
 
-    #random.shuffle(devset)
+    if randomize:
+        print("Randomizing dataset...")
+        random.shuffle(dataset)
 
     feat_objs    = [followers_count_feature.FollowersCountFeature(),
                     statuses_count_feature.StatusesCountFeature(),
                     tweet_length_feature.TweetLengthFeature(),
                     hashtag_count_feature.HashtagCountFeature(),
+                    # hashtag_popularity_feature.HashtagPopularityFeature(),
                     user_mentions_count_feature.UserMentionsCountFeature(),
                     favorite_count_feature.FavoriteCountFeature(),
                     has_url_feature.HasUrlFeature(),
@@ -157,15 +176,97 @@ def main(args):
                     dts.DecisionTreeScikit(),
                     dt.DecisionTree(),
                     mv.MajorityVote()]
+    if verbose:
+        print("\nFeatures activated:")
+        for feat in feat_objs:
+            print("- %s") % (str(feat))
+        print("\nClassifiers used:")
+        for cl in classif_objs:
+            print("- %s") % (str(cl))
+        print("")
 
-    # "normal" classifications
     size       = int(math.floor(len(dataset)*0.6666))
     train_data = dataset[0:-size]
     test_data  = dataset[-size+1:]
-    #classification_routine(train_data, test_data, feat_objs, classif_objs)
 
-    # cross validatation
-    cross_validation(dataset, feat_objs, classif_objs)
+    if classification:
+        print("Starting classification...")
+        classification_routine(train_data, test_data, feat_objs, classif_objs)
+
+    if x_validation:
+        print("Performing cross validation...")
+        cross_validation(dataset, feat_objs, classif_objs)
 
 if __name__ == "__main__":
-    main(sys.argv)
+    parser = argparse.ArgumentParser(
+        prog='TweetMining',
+        description='Predict if a tweet will be retweeted or not.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-a', '--all',
+                        action='store_true',
+                        default=False,
+                        help='do all (classification, tournament and \
+                        cross-validation')
+    parser.add_argument('-c', '--classification',
+                        action='store_true',
+                        default=False,
+                        help='perform classification')
+    parser.add_argument('-d', '--dataset',
+                        action='store',
+                        default='dataset',
+                        choices=['devset', 'dataset'],
+                        help='dataset to use')
+    parser.add_argument('-r', '--randomize',
+                        action='store_true',
+                        default=False,
+                        help='randomize dataset')
+    parser.add_argument('-t', '--tournament',
+                        action='store_true',
+                        default=False,
+                        help='perform algorithm tournament')
+    parser.add_argument('-v', '--verbose',
+                        action='store_true',
+                        default=False,
+                        help='increase verbosity')
+    parser.add_argument('--version',
+                        action='version',
+                        version='%(prog)s 1.0')
+    parser.add_argument('-x', '--x-validation',
+                        action='store_true',
+                        default=False,
+                        help='perform cross-validation')
+
+    args = parser.parse_args()
+
+    if args.dataset == 'devset':
+        dev = True
+    else:
+        dev = False
+
+    if not (args.all or
+            args.classification or
+            args.tournament or
+            args.x_validation):
+        print("No option chosen. Thus simply performing classification.")
+        main(True,
+             args.tournament,
+             args.x_validation,
+             dev,
+             args.randomize,
+             args.verbose)
+    elif args.all:
+        main(True,
+             True,
+             True,
+             dev,
+             args.randomize,
+             args.verbose)
+    else:
+        main(args.classification,
+             args.tournament,
+             args.x_validation,
+             dev,
+             args.randomize,
+             args.verbose)
+
+    sys.exit(0)
