@@ -371,9 +371,9 @@ if __name__ == "__main__":
     parser.add_argument('-m', '--multithreading',
                         action='store_true',
                         default=False,
-                        help='activate multithreading. It should be faster on a\
-                        machine with multiple cpu/cores but the messages \
-                        printed by the program will be random.')
+                        help='activate multiprocessing. It should be faster on \
+                        a machine with multiple cpu/cores but the messages \
+                        from the program will be printed randomly.')
     parser.add_argument('-r', '--randomize',
                         action='store_true',
                         default=False,
