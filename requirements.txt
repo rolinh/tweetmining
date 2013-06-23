@@ -3,6 +3,5 @@ numpy
 matplotlib
 nltk
 twython
-svmlight
 scipy
 scikit-learn

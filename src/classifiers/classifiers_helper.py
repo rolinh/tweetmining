@@ -28,7 +28,7 @@ def accuracy(labels, predictions):
             correct += 1
         total += 1
 
-    return (float(correct) / float(total)) * 100
+    return (float(correct) / float(total)) * 100.0
 
 def highest_bin_freq(ary):
     """Find the binary value that occurs the most frequently in a given

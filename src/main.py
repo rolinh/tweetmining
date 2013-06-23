@@ -33,6 +33,8 @@ import words_processing as wp
 import math
 import random
 import sys
+import argparse
+import itertools
 
 def extract_train_instances(dataset, feat_objs):
     """Extract instances from the data set and returns the instances as an
@@ -54,18 +56,21 @@ def extract_train_instances(dataset, feat_objs):
 
     return instances, labels
 
-def classification_routine(train_instances, test_instances, classif_objs):
+def classification_routine(train_inst, test_inst, train_labels,
+                           test_labels, classif_objs):
     """Run the classification process with feature extraction stuff and
     prediction. It returns a list of accuracies and a list of lists of
     predictions."""
+
+    print("Starting classification...")
 
     # classification
     accuracies_list  = []
     predictions_list = []
     for c in classif_objs:
         print("Classifying using %s...") % str(c)
-        c.train(train_labels, train_instances)
-        accuracy,predictions = c.test(test_labels, test_instances)
+        c.train(train_labels, train_inst)
+        accuracy,predictions = c.test(test_labels, test_inst)
         print('Accuracy %s: %.2f%%\n') % (str(c), accuracy)
         accuracies_list.append(accuracy)
         predictions_list.append(predictions)
@@ -73,11 +78,7 @@ def classification_routine(train_instances, test_instances, classif_objs):
     return accuracies_list, predictions_list
 
 def cross_validation(instances, labels, classif_objs):
-    dataset    = []
-    [dataset.append(v) for v in test_instances]
-    [dataset.append(v) for v in train_instances]
-
-    length     = len(dataset)
+    length     = len(instances)
     subsize    = int(math.floor(length*0.1))
     maxiter    = int(math.floor(float(length) / float(subsize)))
 
@@ -90,6 +91,7 @@ def cross_validation(instances, labels, classif_objs):
     r = range(0, len(classif_objs))
     average_accuracies = [0.0 for i in r]
     all_predictions    = []
+    all_labels         = []
 
     for i in range(0,maxiter):
         print('step %d/%d\n') % (i+1, maxiter)
@@ -97,27 +99,41 @@ def cross_validation(instances, labels, classif_objs):
         start = i * subsize
         end   = start + subsize-1
 
-        test_data = dataset[start:end+1]
+        test_data   = instances[start:end+1]
+        test_labels = labels[start:end+1]
 
         # handle train data position
         if start == 0:
-            train_data  = dataset[end+1:]
+            train_data   = instances[end+1:]
+            train_labels = labels[end+1:]
         elif end == maxiter * subsize:
             # TODO CHECK THIS !
             if maxiter * subsize == length:
-                train_data  = dataset[:start-1]
+                train_data   = instances[:start-1]
+                train_labels = labels[:start-1]
             else:
-                train_data = dataset[:start]
-                for v in dataset[end+1:]:
+                train_data   = instances[:start]
+                train_labels = labels[:start]
+
+                for v in instances[end+1:]:
                     train_data.append(v)
+
+                for v in labels[end+1:]:
+                    train_labels.append(v)
         else:
-            train_data  = dataset[0:start]
-            for v in dataset[end+1:]:
+            train_data   = instances[0:start]
+            train_labels = labels[0:start]
+
+            for v in instances[end+1:]:
                 train_data.append(v)
 
-        acc, pred = classification_routine(train_data, test_data,
-                                           feat_objs, classif_objs)
+            for v in labels[end+1:]:
+                train_labels.append(v)
+
+        acc, pred = classification_routine(train_data, test_data, train_labels,
+                                           test_labels, classif_objs)
         all_predictions.append(pred)
+        all_labels.append(test_labels)
 
         # update average accuracies
         for i,v in enumerate(acc):
@@ -132,18 +148,17 @@ def cross_validation(instances, labels, classif_objs):
     for i,v in enumerate(average_accuracies):
         average_accuracies[i] = float(v) / float(maxiter)
 
-    return average_accuracies, all_predictions
+    return average_accuracies, all_predictions, test_labels
 
-def algorithm_tournament(instances, labels, feat_objs, classif_objs):
+def algorithm_tournament(instances, full_labels, classif_objs):
     """Algorithm tournament"""
 
-    acc, pred = cross_validation(dataset, feat_objs, classif_objs)
     indices   = range(0, len(classif_objs))
     scores    = [0 for i in range(0, len(classif_objs))]
 
-    average_acc, all_predic = cross_validation(instances, labels, classif_objs)
+    average_acc, all_predic, labels = cross_validation(instances, full_labels, classif_objs)
 
-    for ind in itertools.combinations(indices, length):
+    for ind in itertools.combinations(indices, 2):
         i1 = ind[0]
         i2 = ind[1]
         c1 = str(classif_objs[i1])
@@ -158,24 +173,26 @@ def algorithm_tournament(instances, labels, feat_objs, classif_objs):
             local_table = [[0, 0], [0, 0]]
 
             for i in range(0, len(res1)):
-                if res1[i] == res2[i] and res1[i] == labels[i]:
+                if str(res1[i]) == labels[i] and str(res2[i]) == labels[i]:
                     local_table[1][1] += 1
-                elif res1[i] == res2[i] and res1[i] != labels[i]:
+                elif str(res1[i]) != labels[i] and str(res2[i]) != labels[i]:
                     local_table[0][0] += 1
-                elif res1[i] != labels[i]:
+                elif str(res1[i]) != labels[i] and str(res2[i]) == labels[i]:
                     local_table[0][1] += 1
                 else:
                     local_table[1][0] += 1
 
             # give score
-            if local_table[0][1] > local_table[0][1]:
-                score[i2] += 1
-            elif local_table[0][1] < local_table[0][1]:
-                score[i1] += 1
+            if local_table[0][1] > local_table[1][0]:
+                scores[i2] += 1
+            elif local_table[0][1] < local_table[1][0]:
+                scores[i1] += 1
             else:
-                score[i1] += 0.5
-                score[i2] += 0.5
+                scores[i1] += 0.5
+                scores[i2] += 0.5
 
+            print('local table :')
+            print(local_table)
             # update contingency table
             contingency_table[0][0] += local_table[0][0]
             contingency_table[0][1] += local_table[0][1]
@@ -185,43 +202,67 @@ def algorithm_tournament(instances, labels, feat_objs, classif_objs):
         # perform mcnemar test
         signi = u.mcnemar(contingency_table)
 
-        winner = 'egality !'
-        if contingency_table[0][1] > contingency_table[0][1]
-            winner = str(c2)
-        elif contingency_table[0][1] < contingency_table[0][1]
-            winner = str(c1)
-        print('%s vs %s') % (str(c1), str(c2))
+        print('Contingency table :')
+        print(contingency_table)
+
+        winner = 'tie !'
+        if contingency_table[0][1] > contingency_table[1][0]:
+            winner = c2
+        elif contingency_table[0][1] < contingency_table[1][0]:
+            winner = c1
+        print('%s vs %s') % (c1, c2)
         print('The winner is : %s') % (winner)
-        print('McNemar test: %s') % (u.mcnemar(contingency_table))
+        print('McNemar test: %s') % (str(u.mcnemar(contingency_table)))
         print('################')
 
     # tournament results
     print('\nTournament results :')
-    for i,v in enumerate(score):
+    for i,v in enumerate(scores):
         print('%s: %f') % (classif_objs[i], v)
 
-def main(args):
+def main(classification=True,
+         tournament=False,
+         x_validation=False,
+         devset=False,
+         randomize=False,
+         verbose=False):
     """main function"""
-    print("Collecting data...")
 
-    dataset = u.json_to_tweets('../data/devset.json', False)
-    words_occ = u.words_occ_to_dict('../data/devset_words_occurrence.txt')
+    if devset:
+        print("Using development dataset")
+        set_file = '../data/devset.json'
+        wocc_file = '../data/devset_words_occurrence.txt'
+    else:
+        print("Using full dataset")
+        set_file = '../data/dataset.json'
+        wocc_file = '../data/dataset_words_occurrence.txt'
+
+    print("Collecting data...")
+    dataset = u.json_to_tweets(set_file, False)
+    print("Loading words occurrencies...")
+    words_occ = u.words_occ_to_dict(wocc_file)
+    print("Computing term frequency...")
     words_tf = u.words_occ_to_tf(words_occ)
+    print("Computing term frequency - inverse document frequency...")
     words_tf_idf = u.words_occ_to_tfidf(words_occ)
 
-    #random.shuffle(devset)
+    if randomize:
+        print("Randomizing dataset...")
+        random.shuffle(dataset)
 
     feat_objs    = [followers_count_feature.FollowersCountFeature(),
                     statuses_count_feature.StatusesCountFeature(),
                     tweet_length_feature.TweetLengthFeature(),
                     hashtag_count_feature.HashtagCountFeature(),
+                    # hashtag_popularity_feature.HashtagPopularityFeature(),
                     user_mentions_count_feature.UserMentionsCountFeature(),
                     favorite_count_feature.FavoriteCountFeature(),
                     has_url_feature.HasUrlFeature(),
                     friends_count_feature.FriendsCountFeature(),
                     verified_account_feature.VerifiedAccountFeature(),
                     tf_feature.Tf(data=words_tf),
-                    tf_idf_feature.TfIdf(data=words_tf_idf)]
+                    tf_idf_feature.TfIdf(data=words_tf_idf)
+                    ]
     classif_objs = [nb.NaiveBayes(),
                     nbs.NaiveBayesScikit(),
                     svm_rbf.SVMRBF(),
@@ -234,15 +275,97 @@ def main(args):
                     dts.DecisionTreeScikit(),
                     dt.DecisionTree(),
                     mv.MajorityVote()]
+    if verbose:
+        print("\nFeatures activated:")
+        for feat in feat_objs:
+            print("- %s") % (str(feat))
+        print("\nClassifiers used:")
+        for cl in classif_objs:
+            print("- %s") % (str(cl))
+        print("")
 
-    # "normal" classifications
-    size       = int(math.floor(len(dataset)*0.6666))
-    train_data = dataset[0:-size]
-    test_data  = dataset[-size+1:]
-    #classification_routine(train_data, test_data, feat_objs, classif_objs)
+    instances, labels = extract_train_instances(dataset, feat_objs)
 
-    # cross validatation
-    cross_validation(dataset, feat_objs, classif_objs)
+    if classification:
+        size         = int(math.floor(len(instances)*0.33333))
+        train_data   = instances[0:-size+1]
+        test_data    = instances[-size+1:]
+        train_labels = labels[0:-size+1]
+        test_labels  = labels[-size+1:]
+
+        classification_routine(train_data, test_data, train_labels,
+                               test_labels, classif_objs)
+
+    if x_validation:
+        cross_validation(instances, labels, classif_objs)
+
+    if tournament:
+        algorithm_tournament(instances, labels, classif_objs)
 
 if __name__ == "__main__":
-    main(sys.argv)
+    parser = argparse.ArgumentParser(
+        prog='TweetMining',
+        description='Predict if a tweet will be retweeted or not.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-a', '--all',
+                        action='store_true',
+                        default=False,
+                        help='do all (classification, tournament and \
+                        cross-validation')
+    parser.add_argument('-c', '--classification',
+                        action='store_true',
+                        default=False,
+                        help='perform classification')
+    parser.add_argument('-d', '--devset',
+                        action='store_true',
+                        default=False,
+                        help='use development dataset')
+    parser.add_argument('-r', '--randomize',
+                        action='store_true',
+                        default=False,
+                        help='randomize dataset')
+    parser.add_argument('-t', '--tournament',
+                        action='store_true',
+                        default=False,
+                        help='perform algorithm tournament')
+    parser.add_argument('-v', '--verbose',
+                        action='store_true',
+                        default=False,
+                        help='increase verbosity')
+    parser.add_argument('--version',
+                        action='version',
+                        version='%(prog)s 1.0')
+    parser.add_argument('-x', '--x-validation',
+                        action='store_true',
+                        default=False,
+                        help='perform cross-validation')
+
+    args = parser.parse_args()
+
+    if not (args.all or
+            args.classification or
+            args.tournament or
+            args.x_validation):
+        print("No option chosen. Thus simply performing classification.")
+        main(True,
+             args.tournament,
+             args.x_validation,
+             args.devset,
+             args.randomize,
+             args.verbose)
+    elif args.all:
+        main(True,
+             True,
+             True,
+             args.devset,
+             args.randomize,
+             args.verbose)
+    else:
+        main(args.classification,
+             args.tournament,
+             args.x_validation,
+             args.devset,
+             args.randomize,
+             args.verbose)
+
+    sys.exit(0)

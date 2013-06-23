@@ -160,7 +160,6 @@ def tag_as_retweet(dataset):
                 else:
                     rval[str(tmp.id)] = 1
 
-
     return rval
 
 def bool_as_label(boolean):
@@ -194,7 +193,10 @@ def mcnemar(contingency_table):
     tf = contingency_table[1][0]
     tt = contingency_table[1][1]
 
-    chi_square = float((abs(ft-tf)-1)**2)/float(ft+tf)
+    if ft + tf == 0:
+        chi_square = 0
+    else:
+        chi_square = float((abs(ft-tf)-1)**2)/float(ft+tf)
     p_value    = 1 - stats.chi2.cdf(chi_square, 1, 0)
 
     return chi_square, p_value
