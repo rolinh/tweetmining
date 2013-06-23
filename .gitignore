@@ -25,6 +25,7 @@ report/*.log
 report/*.make
 report/*.make.temp
 report/*.out
+*.tex.backup
 report/sections/*.aux
 report/main.pdf
 
