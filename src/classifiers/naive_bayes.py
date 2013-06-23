@@ -14,12 +14,13 @@ class NaiveBayes(ac.AbstractClassifier):
         data = helper.format_for_nltk(labels, train_set)
         self.classifier = nb.NaiveBayesClassifier.train(data)
 
-        # TODO use this in the main.py
-        #self.classifier.show_most_informative_features(5)
-
     def test(self, labels, test_set):
         if self.classifier == None:
             return []
 
         predictions = [self.classifier.classify(inst) for inst in test_set]
-        return helper.accuracy(labels, predictions, self.plot_roc), predictions
+
+        if self.plot_roc:
+            print("ROC curve plot unavailable for %s") % (str(self))
+
+        return helper.accuracy(labels, predictions), predictions

@@ -22,4 +22,8 @@ class MaxEnt(ac.AbstractClassifier):
             return []
 
         predictions = [self.classifier.classify(inst) for inst in test_set]
-        return helper.accuracy(labels, predictions, self.plot_roc), predictions
+
+        if self.plot_roc:
+            print("ROC curve plot unavailable for %s") % (str(self))
+
+        return helper.accuracy(labels, predictions), predictions

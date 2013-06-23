@@ -17,6 +17,10 @@ class NaiveBayesScikit(ac.AbstractClassifier):
         self.classifier.fit(ts, l)
 
     def test(self, labels, test_set):
-        _,ts = helper.format_for_scikit(labels, test_set)
+        l,ts = helper.format_for_scikit(labels, test_set)
         predictions = self.classifier.predict(ts)
-        return helper.accuracy(labels, predictions, self.plot_roc), predictions
+
+        if self.plot_roc:
+            print("ROC curve plot unavailable for %s") % (str(self))
+
+        return helper.accuracy(labels, predictions), predictions

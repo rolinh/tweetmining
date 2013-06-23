@@ -6,7 +6,7 @@ class StatusesCountFeature(af.AbstractFeature):
         return "<StatusesCountFeature>"
 
     def __str__(self):
-        return "StatusesCountFeature"
+        return "Statuses Count Feature"
 
     def extract(self, tweet):
         return "statuses_count", tweet.user.statuses_count

@@ -22,12 +22,18 @@ class AbstractSVM(ac.AbstractClassifier):
         pass
 
     def train_helper(self, labels, train_set, kernel_name, deg=3):
-        self.classifier = svm.SVC(kernel=kernel_name, degree=deg)
+        self.classifier = svm.SVC(kernel=kernel_name, degree=deg,
+                                  probability=True)
         l,ts = helper.format_for_scikit(labels, train_set)
         self.classifier.fit(ts, l)
 
     def test(self, labels, test_set):
-        _,ts = helper.format_for_scikit(labels, test_set)
+        l,ts = helper.format_for_scikit(labels, test_set)
         predictions = self.classifier.predict(ts)
-        return helper.accuracy(labels, predictions, self.plot_roc), predictions
+
+        if self.plot_roc:
+            probas = self.classifier.predict_proba(ts)
+            helper.roc(probas, l, str(self))
+
+        return helper.accuracy(labels, predictions), predictions
 

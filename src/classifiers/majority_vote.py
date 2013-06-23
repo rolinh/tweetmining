@@ -16,5 +16,8 @@ class MajorityVote(ac.AbstractClassifier):
         if self.classifier == None:
             return []
 
+        if self.plot_roc:
+            print("ROC curve plot unavailable for %s") % (str(self))
+
         predictions = [self.classifier] * len(test_set)
-        return helper.accuracy(labels, predictions, self.plot_roc), predictions
+        return helper.accuracy(labels, predictions), predictions
