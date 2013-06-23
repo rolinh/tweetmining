@@ -204,6 +204,7 @@ def mcnemar(contingency_table):
     return chi_square, p_value
 
 def entropy(labels):
+    """Compute the entropy of the given labels."""
     freqdist = nltk.FreqDist(labels)
     probs = [freqdist.freq(l) for l in freqdist]
     return -sum([p * math.log(p, 2) for p in probs])
