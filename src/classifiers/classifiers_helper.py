@@ -34,9 +34,7 @@ def accuracy(labels, predictions, plot_roc=False):
         total += 1
 
     if plot_roc:
-        d = [(int(labels[i]), int(predictions[i])) for i in range(0,len(labels))]
-        roc = ROCData(d)
-        roc.plot(title='ROC Curve')
+        pass
 
     return (float(correct) / float(total)) * 100.0
 
