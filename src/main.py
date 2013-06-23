@@ -30,13 +30,15 @@ from features import tf_idf_feature
 import utils as u
 import words_processing as wp
 
+from sklearn import metrics
+
 import math
 import random
 import sys
 import argparse
 import itertools
 
-def extract_train_instances(dataset, feat_objs):
+def extract_instances(dataset, feat_objs):
     """Extract instances from the data set and returns the instances as an
     array of dictionary and the list of labels"""
 
@@ -148,7 +150,7 @@ def cross_validation(instances, labels, classif_objs):
     for i,v in enumerate(average_accuracies):
         average_accuracies[i] = float(v) / float(maxiter)
 
-    return average_accuracies, all_predictions, test_labels
+    return average_accuracies, all_predictions, all_labels
 
 def algorithm_tournament(instances, full_labels, classif_objs):
     """Algorithm tournament"""
@@ -166,18 +168,18 @@ def algorithm_tournament(instances, full_labels, classif_objs):
 
         contingency_table  = [[0, 0], [0, 0]]
 
-        for turn in all_predic:
+        for turn_ind, turn in enumerate(all_predic):
             res1 = turn[i1]
             res2 = turn[i2]
 
             local_table = [[0, 0], [0, 0]]
 
             for i in range(0, len(res1)):
-                if str(res1[i]) == labels[i] and str(res2[i]) == labels[i]:
+                if str(res1[i]) == labels[turn_ind][i] and str(res2[i]) == labels[turn_ind][i]:
                     local_table[1][1] += 1
-                elif str(res1[i]) != labels[i] and str(res2[i]) != labels[i]:
+                elif str(res1[i]) != labels[turn_ind][i] and str(res2[i]) != labels[turn_ind][i]:
                     local_table[0][0] += 1
-                elif str(res1[i]) != labels[i] and str(res2[i]) == labels[i]:
+                elif str(res1[i]) != labels[turn_ind][i] and str(res2[i]) == labels[turn_ind][i]:
                     local_table[0][1] += 1
                 else:
                     local_table[1][0] += 1
@@ -251,31 +253,36 @@ def main(classification=True,
         print("Randomizing dataset...")
         random.shuffle(dataset)
 
-    feat_objs    = [followers_count_feature.FollowersCountFeature(),
+    # list of objects containing the feature classes
+    feat_objs    = [
+                    followers_count_feature.FollowersCountFeature(),
                     statuses_count_feature.StatusesCountFeature(),
                     tweet_length_feature.TweetLengthFeature(),
-                    hashtag_count_feature.HashtagCountFeature(),
+                    #hashtag_count_feature.HashtagCountFeature(),
                     # hashtag_popularity_feature.HashtagPopularityFeature(),
                     user_mentions_count_feature.UserMentionsCountFeature(),
                     favorite_count_feature.FavoriteCountFeature(),
                     has_url_feature.HasUrlFeature(),
                     friends_count_feature.FriendsCountFeature(),
                     verified_account_feature.VerifiedAccountFeature(),
-                    tf_feature.Tf(data=words_tf),
-                    tf_idf_feature.TfIdf(data=words_tf_idf)
+                    #tf_feature.Tf(data=words_tf)
+                    #tf_idf_feature.TfIdf(data=words_tf_idf)
                     ]
-    classif_objs = [nb.NaiveBayes(plot_roc),
+
+    # list of objects containing the classifier classes
+    classif_objs = [#nb.NaiveBayes(plot_roc),
                     nbs.NaiveBayesScikit(plot_roc),
                     svm_rbf.SVMRBF(plot_roc),
-                    svm_sigmoid.SVMSigmoid(plot_roc),
+                    #svm_sigmoid.SVMSigmoid(plot_roc),
                     #svm_poly.SVMPoly(plot_roc),
                     #svm_linear.SVMLinear(plot_roc),
                     #me.MaxEnt(plot_roc),
                     lda.LDA(plot_roc),
                     mes.MaxEntScikit(plot_roc),
                     dts.DecisionTreeScikit(plot_roc),
-                    dt.DecisionTree(plot_roc),
-                    mv.MajorityVote(plot_roc)]
+                    #dt.DecisionTree(plot_roc),
+                    mv.MajorityVote(plot_roc)
+                    ]
     if verbose:
         print("\nFeatures activated:")
         for feat in feat_objs:
@@ -285,10 +292,11 @@ def main(classification=True,
             print("- %s") % (str(cl))
         print("")
 
-    instances, labels = extract_train_instances(dataset, feat_objs)
+    # extract features and build a list of instances
+    instances, labels = extract_instances(dataset, feat_objs)
 
     if classification:
-        size         = int(math.floor(len(instances)*0.33333))
+        size         = int(math.floor(len(instances)*0.25))
         train_data   = instances[0:-size+1]
         test_data    = instances[-size+1:]
         train_labels = labels[0:-size+1]
