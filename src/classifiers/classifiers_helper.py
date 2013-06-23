@@ -1,5 +1,10 @@
 # coding: utf-8
 
+import sys
+import os
+
+from pyroc import *
+
 def format_for_nltk(labels, dataset):
     """Format `labels` and `dataset` arrays to NLTK dataset format."""
     if len(labels) != len(dataset):
@@ -15,7 +20,7 @@ def format_for_scikit(labels, dataset):
         nd.append(tmp)
     return l,nd
 
-def accuracy(labels, predictions):
+def accuracy(labels, predictions, plot_roc=False):
     """Compute the accuracy of predictions"""
     if len(labels) != len(predictions):
         return -1
@@ -27,6 +32,11 @@ def accuracy(labels, predictions):
         if labels[i] == str(v):
             correct += 1
         total += 1
+
+    if plot_roc:
+        d = [(int(labels[i]), int(predictions[i])) for i in range(0,len(labels))]
+        roc = ROCData(d)
+        roc.plot(title='ROC Curve')
 
     return (float(correct) / float(total)) * 100.0
 

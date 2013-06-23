@@ -225,7 +225,8 @@ def main(classification=True,
          x_validation=False,
          devset=False,
          randomize=False,
-         verbose=False):
+         verbose=False,
+         plot_roc=False):
     """main function"""
 
     if devset:
@@ -263,18 +264,18 @@ def main(classification=True,
                     tf_feature.Tf(data=words_tf),
                     tf_idf_feature.TfIdf(data=words_tf_idf)
                     ]
-    classif_objs = [nb.NaiveBayes(),
-                    nbs.NaiveBayesScikit(),
-                    svm_rbf.SVMRBF(),
-                    svm_sigmoid.SVMSigmoid(),
-                    #svm_poly.SVMPoly(),
-                    #svm_linear.SVMLinear(),
-                    #me.MaxEnt(),
-                    lda.LDA(),
-                    mes.MaxEntScikit(),
-                    dts.DecisionTreeScikit(),
-                    dt.DecisionTree(),
-                    mv.MajorityVote()]
+    classif_objs = [nb.NaiveBayes(plot_roc),
+                    nbs.NaiveBayesScikit(plot_roc),
+                    svm_rbf.SVMRBF(plot_roc),
+                    svm_sigmoid.SVMSigmoid(plot_roc),
+                    #svm_poly.SVMPoly(plot_roc),
+                    #svm_linear.SVMLinear(plot_roc),
+                    #me.MaxEnt(plot_roc),
+                    lda.LDA(plot_roc),
+                    mes.MaxEntScikit(plot_roc),
+                    dts.DecisionTreeScikit(plot_roc),
+                    dt.DecisionTree(plot_roc),
+                    mv.MajorityVote(plot_roc)]
     if verbose:
         print("\nFeatures activated:")
         for feat in feat_objs:
@@ -328,6 +329,10 @@ if __name__ == "__main__":
                         action='store_true',
                         default=False,
                         help='perform algorithm tournament')
+    parser.add_argument('-p', '--plot-roc',
+                        action='store_true',
+                        default=False,
+                        help='plot ROC curve')
     parser.add_argument('-v', '--verbose',
                         action='store_true',
                         default=False,
@@ -352,20 +357,23 @@ if __name__ == "__main__":
              args.x_validation,
              args.devset,
              args.randomize,
-             args.verbose)
+             args.verbose,
+             args.plot_roc)
     elif args.all:
         main(True,
              True,
              True,
              args.devset,
              args.randomize,
-             args.verbose)
+             args.verbose,
+             args.plot_roc)
     else:
         main(args.classification,
              args.tournament,
              args.x_validation,
              args.devset,
              args.randomize,
-             args.verbose)
+             args.verbose,
+             args.plot_roc)
 
     sys.exit(0)

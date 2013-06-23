@@ -7,6 +7,9 @@ class AbstractClassifier:
     classifier = None
     """Trained classifier instance."""
 
+    def __init__(self, plot_roc=False):
+        self.plot_roc = plot_roc
+
     @abstractmethod
     def __repr__(self):
         pass

@@ -19,4 +19,4 @@ class NaiveBayesScikit(ac.AbstractClassifier):
     def test(self, labels, test_set):
         _,ts = helper.format_for_scikit(labels, test_set)
         predictions = self.classifier.predict(ts)
-        return helper.accuracy(labels, predictions), predictions
+        return helper.accuracy(labels, predictions, self.plot_roc), predictions

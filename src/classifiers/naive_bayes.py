@@ -22,4 +22,4 @@ class NaiveBayes(ac.AbstractClassifier):
             return []
 
         predictions = [self.classifier.classify(inst) for inst in test_set]
-        return helper.accuracy(labels, predictions), predictions
+        return helper.accuracy(labels, predictions, self.plot_roc), predictions
