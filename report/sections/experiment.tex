@@ -1,1 +1,38 @@
 \section{Experiment}
+
+When ran with all the options activated, our tool first collects the data from 
+a \verb|json| file containing our dataset, then loads the words occurrences 
+from a file which has been previously generated and computes the term frequency 
+as well as the term frequency invert document frequency.
+
+Once done, the features are extracted and the instances and labels are built as 
+lists. The entropy is computed over the labels.
+
+From that point, classification, cross-validation and algorithm tournament are 
+computed.
+
+\subsection{Classification}
+
+To perform the classification the train set is first set as $75\%$ of the 
+instances, the test set is set as the $25\%$ remaining.
+In the same way, the train labels are set as $75\%$ of the labels and the test 
+labels are the $25\%$ remaining.
+
+Then, the classification routine is run. It iterates over all the classifiers 
+and computes their accuracy and predictions.
+
+\subsection{Cross-validation}
+
+For the cross-validation, the data is partitioned into complementary subsets.
+The analysis is performed on the training subset while it is validated by the 
+testing subset. Ten rounds are performed using a partition of $10\%$ - $90\%$.
+The results of the cross-validation are then being used to by the 
+algorithm tournament.
+
+\subsection{Algorithm tournament}
+
+The algorithm tournament compares the results of the different classifiers, 
+each one against each other.
+Due to the lack of having a powerful enough computer, we were not able to use 
+the support vector machine classifiers in the tournament as the computation 
+times is quite long with such a dataset and having so many features to use.
