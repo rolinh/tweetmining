@@ -1,9 +1,8 @@
 \section{Features description}
 
-In this section, we first describe the features that are relevant for our 
-work, and then we discuss about their usefulness in the classification process. 
-We finally mention the other features that have been removed from the final 
-experiment. The table \ref{tab:features} lists all the features.
+In this section, we describe the features that are relevant for our work and 
+mention the other features that have been removed from the final experiment. The 
+table \ref{tab:features} lists all the features.
 
 \begin{table}[!h]
  \centering
@@ -17,15 +16,15 @@ experiment. The table \ref{tab:features} lists all the features.
   3  & number of followers \\
   4  & number of times "favorited" \\
   5  & number of tweets issued by the author \\
-  6  & is the author a verfied account \\
+  6  & is the author a verified account \\
   7  & number of user's friends \\
   8  & number of hashtags \\
   9  & number of words in the tweet \\
   10 & number of users mentionned \\
   11 & has an URL \\
   12 & TF feature \\
-  13 & TF-IDF feature \\
-  14 & tweet's age \\
+  13 & tweet's age \\
+  14 & TF-IDF feature \\
   \hline
  \end{tabular}
  \caption{This table lists the features used in our work. Their order has no 
@@ -56,3 +55,22 @@ The feature number six indicates if the author of the tweet has a verified
 account. Such accounts establish the authenticity of the user's identity. In 
 our case, this means that the author of the tweet is famous and then he will be 
 probably retweeted.
+
+The seventh feature is the number of friends (aka the number users following 
+the author). This count is provided by the \emph{User} object. The number of 
+friends is strongly related to the number of retweets.
+
+The feature number eight counts the number of hashtags from the \emph{Tweet} 
+object and the feature number nine is the number of words of the tweet.
+
+The tenth feature gives the number of users mentionned with a "@username" in 
+the tweet. This information is calculated from the list of "user\_mentions" 
+given by the \emph{User} object.
+
+The feature number eleven indicates if the tweet contains an URL or not. The 
+list of URL is provided by the \emph{Tweet entities} object.
+
+Since the three last features did not give good results, they have been 
+removed. The TF (Term Frequency) and the Tweet age were not significant while 
+the TF-IDF (Term Frequency - Inverse Document Frequency) feature did not work 
+due to a bug in the \emph{scikit} library.
