@@ -12,14 +12,15 @@ dataset. To compute the term frequency - inverse document frequency, the
 occurrence of words in the tweets needed to be computed.
 
 To do so, we had to first create a corpus and then compute the occurrence of
-each word. Only the text from the tweets was kept. Insignificant words were 
-removed so that only nouns, verbs and adjectives were kept.We used Penn Treeban 
-Part-of-Speech Tags for this task.  URLs, stop words or other special 
-characters were obviously removed too. Once we had built the corpus, we created 
-a file containing each words of the corpus and their occurrence throughout the 
-whole dataset's tweet's text.
+each word. We used Penn Treeban Part-of-Speech Tags in order to remove 
+insignificant words so that only nouns, verbs and adjectives were kept from the 
+text of the tweets. URLs, stop words or other special characters 
+were obviously removed too. Once we had built the corpus, we created a file 
+containing each words of the corpus and their occurrence throughout the whole 
+dataset's tweet's text.
 
 These words occurrences were later used in order to compute words frequencies 
 used in TF and TF-IDF features.
 
-The labels extracted from the tweets have an entropy of $0.97$.
+The labels, i.e. a flag telling if a tweet is a retweet, extracted from the 
+tweets have an entropy of $0.97$.
