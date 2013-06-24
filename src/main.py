@@ -13,6 +13,7 @@ from classifiers import lda
 from classifiers import decision_tree as dt
 from classifiers import decision_tree_scikit as dts
 from classifiers import majority_vote as mv
+from classifiers import features_selection as fs
 
 from features import fake_feature
 from features import followers_count_feature
@@ -260,21 +261,21 @@ def main(classification=True,
 
     # list of objects containing the feature classes
     feat_objs    = [
+                    #fake_feature.FakeFeature(),
                     is_a_retweet_feature.IsARetweetFeature(),
                     is_a_reply_feature.IsAReplyFeature(),
                     followers_count_feature.FollowersCountFeature(),
-                    tweet_age_feature.TweetAgeFeature(),
+                    #tweet_age_feature.TweetAgeFeature(),
                     tweet_length_feature.TweetLengthFeature(),
                     statuses_count_feature.StatusesCountFeature(),
                     hashtag_count_feature.HashtagCountFeature(),
-                    #hashtag_popularity_feature.HashtagPopularityFeature(),
                     user_mentions_count_feature.UserMentionsCountFeature(),
                     favorite_count_feature.FavoriteCountFeature(),
                     has_url_feature.HasUrlFeature(),
                     friends_count_feature.FriendsCountFeature(),
-                    verified_account_feature.VerifiedAccountFeature(),
-                    tf_feature.Tf(data=words_tf),
-                    # tf_idf_feature.TfIdf(data=words_tf_idf)
+                    #verified_account_feature.VerifiedAccountFeature(),
+                    #tf_feature.Tf(data=words_tf),
+                    #tf_idf_feature.TfIdf(data=words_tf_idf)
                     ]
 
     # list of objects containing the classifier classes
@@ -304,6 +305,9 @@ def main(classification=True,
     # extract features and build a list of instances
     instances, labels = extract_instances(dataset, feat_objs)
 
+    # TODO : make the feature selection optional
+    fs.FeaturesSelection.chi2(instances, labels)
+
     print("\nEntropy of the labels:")
     print(u.entropy(labels))
     print("")
@@ -332,7 +336,9 @@ def main(classification=True,
             print("Starting cross-validation thread...")
             xv_thread.start()
         else:
-            cross_validation(instances, labels, classif_objs)
+            ave,_,_ = cross_validation(instances, labels, classif_objs)
+            print('average accuracy :')
+            print(ave)
 
     if tournament:
         if multithreading:

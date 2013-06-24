@@ -4,6 +4,7 @@ from classifiers import abstract_classifier as ac
 from classifiers import classifiers_helper as helper
 
 from sklearn import svm
+from sklearn.decomposition import PCA
 
 class AbstractSVM(ac.AbstractClassifier):
     """Abstract class wrapper to use different kernels in SVM child classes."""
@@ -25,10 +26,18 @@ class AbstractSVM(ac.AbstractClassifier):
         self.classifier = svm.SVC(kernel=kernel_name, degree=deg,
                                   probability=True)
         l,ts = helper.format_for_scikit(labels, train_set)
+
+        #pca = PCA(n_components='mle')
+        #ts = pca.fit_transform(ts)
+
         self.classifier.fit(ts, l)
 
     def test(self, labels, test_set):
         l,ts = helper.format_for_scikit(labels, test_set)
+
+        #pca = PCA(n_components='mle')
+        #ts = pca.fit_transform(ts)
+
         predictions = self.classifier.predict(ts)
 
         if self.plot_roc:
