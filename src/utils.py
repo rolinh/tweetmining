@@ -13,6 +13,7 @@ import re
 import numpy
 import math
 import nltk
+import datetime
 
 import words_processing as wp
 
@@ -208,3 +209,24 @@ def entropy(labels):
     freqdist = nltk.FreqDist(labels)
     probs = [freqdist.freq(l) for l in freqdist]
     return -sum([p * math.log(p, 2) for p in probs])
+
+def format_tweet_date(tweet_date):
+    """Format a date in the format found in a tweet in a standard date format"""
+    d = tweet_date.split(' ')
+    formatted_date = "%s %s %s" % (d[1], d[2], d[5])
+    return datetime.datetime.strptime(formatted_date, "%b %d %Y")
+
+def tweets_date_range(dataset):
+    """Return the number of days beetweet the oldest and the newest tweet from
+    the gived tweets `dataset`"""
+
+    oldest = newest = format_tweet_date(dataset[0].created_at)
+
+    for tweet in dataset:
+        d = format_tweet_date(tweet.created_at)
+        if d < oldest:
+            oldest = d
+        if d > newest:
+            newest = d
+
+    return oldest, newest

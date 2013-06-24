@@ -1,41 +1,57 @@
 \section{Features description}
 \label{sec:features}
 
-In this section, we describe the features that are relevant for our work and 
-mention the other features that have been removed from the final experiment. The 
-table \ref{tab:features} lists all the features.
+In this section, we describe the features that we used in our experiment.
+
+Some features are actually more significant than others, i.e. they provide a 
+better information in order to tell if a tweet will be retweeted or not.
+The more features we use, the more the computation becomes 
+complex. This increased complexity is more significant with a classifier such 
+as the SVM, because of the increased dimensionality, than on some other 
+classifier such as the Naive Bayes but this mean nevertheless that we need to 
+circumscribe the number of our features. Furthermore, some features may provide 
+such an irrelevant, or even non existent, increase of useful information that 
+they shall just be removed.
+
+In order to perform the feature selection for classification, various methods 
+such as information gain (IG) and chi-square (CHI) can be used. We used the 
+latter to determine which features were relevant for our case.
+
+The table \ref{tab:features} lists all the features, order from the most 
+significant to the less significant. Features that have been dropped are in 
+italic font.
 
 \begin{table}[!h]
  \centering
- \begin{tabular}{|c|l|}
+ \begin{tabular}{|c|l|c|}
   \hline
   \tabhead{\#} &
-  \multicolumn{1}{|p{0.7\columnwidth}|}{\centering\tabhead{Features used}} \\
+  \multicolumn{1}{|p{0.6\columnwidth}|}{\centering\tabhead{Features analyzed}} &
+  \multicolumn{1}{|p{0.1\columnwidth}|}{\centering\tabhead{p-value}} \\
   \hline
-  1  & is the tweet a retweet \\
-  2  & is the tweet a reply \\
-  3  & number of followers \\
-  4  & number of times "favorited" \\
-  5  & number of tweets issued by the author \\
-  6  & is the author a verified account \\
-  7  & number of user's friends \\
-  8  & number of hashtags \\
-  9  & number of words in the tweet \\
-  10 & number of users mentionned \\
-  11 & has an URL \\
-  12 & TF feature \\
-  13 & tweet's age \\
-  14 & TF-IDF feature \\
+  1  & is the tweet a retweet &\\
+  2  & is the tweet a reply &\\
+  3  & number of followers &\\
+  4  & number of times "favorited" &\\
+  5  & number of tweets issued by the author &\\
+  6  & is the author a verified account &\\
+  7  & number of user's friends &\\
+  8  & number of hashtags &\\
+  9  & number of words in the tweet &\\
+  10 & number of users mentionned &\\
+  11 & has an URL &\\
+  12 & highest term frequency (TF) &\\
+  13 & tweet's age &\\
+  14 & TF-IDF feature &\\
   \hline
  \end{tabular}
- \caption{This table lists the features used in our work. Their order has no 
-  specific meaning.}
+ \caption{This table lists the features used in our work.}
  \label{tab:features}
 \end{table}
 
-The first feature indicates if a tweet is a retweet or not. This information is 
-extracted from the text of the tweet which appears as a citation of the 
-original tweet with the form "RT @username:". 
+The first feature is based on the fact that a tweet can be a retweet 
+itself. This information can be extracted from the text of the tweet which 
+appears as a citation of the original tweet in the form "RT @username:". 
 
 The feature number 2 determines whether a tweet is a reply to another 
 tweet.This information is provided by the attribute "in\_reply\_to\_user\_id" 

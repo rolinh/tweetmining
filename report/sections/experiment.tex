@@ -14,18 +14,21 @@ computed.
 
 \subsection{Classification}
 
-To perform the classification the train set is first set as $75\%$ of the 
-instances, the test set is set as the $25\%$ remaining.
+To perform the classification the train set is set as $75\%$ of the 
+instances, the test set being the $25\%$ remaining.
 In the same way, the train labels are set as $75\%$ of the labels and the test 
 labels are the $25\%$ remaining.
 
-Then, the classification routine is run. It iterates over all the classifiers 
-and computes their accuracy and predictions.
+Then, the classification routine is run. It iterates over all the 
+selected classifiers and computes their accuracy and predictions.
 
-The table \ref{tab:accuracy} shows the accuracies obtained during the 
-classification process. The best ones are the Maximum Entropy, LDA and Naive 
-Byes. The accuracy of the Support Vector Machine is very bad, however this is 
-not surprising because we did not reduce the dimensionality.
+The table \ref{tab:accuracy} shows the accuracy obtained during the 
+classification process. The best ones are the \emph{Maximum Entropy},
+\emph{LDA} and \emph{Naive Bayes}.
+
+
+The accuracy of the Support Vector Machine is very bad, however this is not 
+surprising because we did not reduce the dimensionality.
 
 \begin{table}[!h]
  \centering
@@ -49,11 +52,37 @@ not surprising because we did not reduce the dimensionality.
 
 \subsection{Cross-validation}
 
-For the cross-validation, the data is partitioned into complementary subsets.
+Once the classification is done, the cross-validation is computed. It allows us 
+to validate our classification results.
+
+For the task, the data is partitioned into complementary subsets.
 The analysis is performed on the training subset while it is validated by the 
 testing subset. Ten rounds are performed using a partition of $10\%$ - $90\%$.
 The results of the cross-validation are then being used to by the 
 algorithm tournament.
+
+The average of the results from the cross-validation for each classifier is 
+shown in table \ref{tab:cross}.
+
+\begin{table}[!h]
+ \centering
+ \begin{tabular}{|l|c|}
+  \hline
+  \tabhead{Classifier} &
+  \multicolumn{1}{|p{0.4\columnwidth}|}{\centering\tabhead{Average accuracy}} \\
+  \hline
+  MaxEnt & 92.00\%\\
+  LDA & 91.84\%\\
+  Naive Bayes & 91.76\%\\
+  Decision Tree & 86.49\%\\
+  SVM (with RBF Kernel) & 60.05\%\\
+  SVM (with Sigmoid Kernel) & 59.78\%\\
+  Majority Vote & 59.78\%\\
+  \hline
+ \end{tabular}
+ \caption{Average accuracy gotten from the cross-validation}
+ \label{tab:cross}
+\end{table}
 
 \subsection{Algorithm tournament}
 
@@ -68,14 +97,14 @@ It gives the winner, the \emph{Chi-Square} and the \emph{p-value}. We defined
 the \emph{Chi-Square} as follow :
 
 \begin{equation} \label{eq:chi-squared2}
-  \chi^2 = {(|b-c|-1)^2 \over b+c}
+  \chi^2 = {\frac{(|b-c|-1)^2}{b+c}}
 \end{equation}
 
 The McNemar test with the bonferroni adjustment says that the comparison is
 significant if :
 
 \begin{equation} \label{eq:bonferroni}
-	p-value < {\alpha \over n}
+	p-value < {\frac{\alpha}{n}}
 \end{equation}
 
 Where $\alpha = 0.05$ and $n$ is the number of duel done during the tournament. 

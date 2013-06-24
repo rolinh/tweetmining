@@ -248,6 +248,14 @@ def main(classification=True,
 
     print("Collecting data...")
     dataset = u.json_to_tweets(set_file, False)
+
+    if verbose:
+        f = "%Y-%m-%d"
+        oldest_tweet, newest_tweet = u.tweets_date_range(dataset)
+        print("Oldest tweet was posted on %s") % (oldest_tweet).strftime(f)
+        print("Newest tweet was posted on %s") % (newest_tweet).strftime(f)
+        print("Date range is %d day(s)") % (newest_tweet - oldest_tweet).days
+
     print("Loading words occurrencies...")
     words_occ = u.words_occ_to_dict(wocc_file)
     print("Computing term frequency...")
