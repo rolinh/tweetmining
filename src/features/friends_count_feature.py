@@ -9,5 +9,5 @@ class FriendsCountFeature(af.AbstractFeature):
         return "Friends Count Feature"
 
     def extract(self, tweet):
-        return "followers_count", tweet.user.friends_count
+        return "friends_count", tweet.user.friends_count
 
