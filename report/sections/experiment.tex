@@ -26,9 +26,14 @@ The table \ref{tab:accuracy} shows the accuracy obtained during the
 classification process. The best ones are the \emph{Maximum Entropy},
 \emph{LDA} and \emph{Naive Bayes}.
 
+Note that we ran the SVMs classifiers we only the three most significant 
+features. This is due to the fact that giving too many features to those 
+classifiers makes their task to find a separating hyperplane very difficult, 
+thus requiring a huge amount of computation time for a pretty poor result.
 
-The accuracy of the Support Vector Machine is very bad, however this is not 
-surprising because we did not reduce the dimensionality.
+We also implemented SVMs classifiers with linear and polynomial kernels. 
+However, one problem with the polynomial kernel is that it can be affected by 
+numerical instability. Thus, we did not use them.
 
 \begin{table}[!h]
  \centering
@@ -41,7 +46,7 @@ surprising because we did not reduce the dimensionality.
   LDA & 91.84\%\\
   Naive Bayes & 91.77\%\\
   Decision Tree & 86.97\%\\
-  SVM (with RBF Kernel) & 60.05\%\\
+  SVM (with RBF Kernel) & 60.08\%\\
   SVM (with Sigmoid Kernel) & 59.78\%\\
   Majority Vote & 59.78\%\\
   \hline
