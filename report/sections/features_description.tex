@@ -19,78 +19,93 @@ latter to determine which features were relevant for our case.
 
 The table \ref{tab:features} lists all the features, order from the most 
 significant to the less significant. Features that have been dropped are in 
-italic font.
+italic font. The removal criterion was the $p-value>0.0$. When taking those 
+features off, the accuracy increases by several points of percentage.
 
 \begin{table}[!h]
  \centering
- \begin{tabular}{|c|l|c|}
+ \begin{tabular}{|c|l|c|c|}
   \hline
   \tabhead{\#} &
-  \multicolumn{1}{|p{0.6\columnwidth}|}{\centering\tabhead{Features analyzed}} &
+  \multicolumn{1}{|p{0.3\columnwidth}|}{\centering\tabhead{Features analyzed}} &
+  \multicolumn{1}{|p{0.1\columnwidth}|}{\centering\tabhead{chi-square}} &
   \multicolumn{1}{|p{0.1\columnwidth}|}{\centering\tabhead{p-value}} \\
   \hline
-  1  & is the tweet a retweet &\\
-  2  & is the tweet a reply &\\
-  3  & number of followers &\\
-  4  & number of times "favorited" &\\
-  5  & number of tweets issued by the author &\\
-  6  & is the author a verified account &\\
-  7  & number of user's friends &\\
-  8  & number of hashtags &\\
-  9  & number of words in the tweet &\\
-  10 & number of users mentionned &\\
-  11 & has an URL &\\
-  12 & highest term frequency (TF) &\\
-  13 & tweet's age &\\
-  14 & TF-IDF feature &\\
+  1  & \# of followers & 11332870 & 0.0\\
+  2  & \# of tweets issued by the author & 1248000 & 0.0\\
+  3  & \# of user's friends & 998714 & 0.0\\
+  4  & is the tweet a retweet & 20615 & 0.0\\
+  5  & \# of words in the tweet & 10095 & 0.0\\
+  6  & \# of users mentioned & 5957 & 0.0\\
+  7  & is the tweet a reply & 3030 & 0.0\\
+  8  & \# of times "favorited" & 2007 & 0.0\\
+  9  & has an URL & 790 & 0.0\\
+  10 & \# of hashtags & 219 & 0.0\\
+  11 & \textit{is the author a verified account} & 18 & 1.8e-05\\
+  12 & \textit{tweet's age} & 16 & 7.7e-05\\
+  13 & \textit{highest term frequency (TF)} & NaN & NaN\\
+  14 & \textit{TF-IDF feature} & NaN & NaN\\
   \hline
  \end{tabular}
  \caption{This table lists the features used in our work.}
  \label{tab:features}
 \end{table}
 
-The first feature is based on the fact that a tweet can be a retweet 
-itself. This information can be extracted from the text of the tweet which 
-appears as a citation of the original tweet in the form "RT @username:". 
+The most significant feature is the number of people that the user follows.
+This value is collected from the \emph{User} object attached to a tweet.
 
-The feature number 2 determines whether a tweet is a reply to another 
-tweet.This information is provided by the attribute "in\_reply\_to\_user\_id" 
+The number of tweets (including retweets), apart from the one analyzed, issued 
+by the author comes at the second place. This information is provided by the 
+attribute "statuses\_count" of the \emph{User} object.
+
+In third place is the number of friends (i.e. the number of users following 
+the author). This value is provided by the \emph{User} object.
+
+As said before, a tweet can be a retweet itself. Being at the fourth place, 
+this feature is still sufficiently significant. This information was 
+extracted from the text of the tweet which appears as a citation of the original 
+tweet in the form "RT @username:".
+
+The number of words in a tweet comes afterwards. The tweet's text was tokenized 
+prior to count the number of words.
+
+The feature in sixth position gives the number of users mentioned in a tweet.
+This information is computed based on the list of "user\_mentions" given by the 
+\emph{User} object.
+
+The next feature determines whether a tweet is a reply to another tweet.This 
+information is provided by the attribute "in\_reply\_to\_user\_id" 
 which contains a non-null value if the tweet is a reply.
 
-The third feature counts the number of followers the author has. This value 
-is given by the \emph{User} object attached to a tweet.
+The feature number 8 corresponds to the number of times a tweet has been 
+"favorited" by other users. This value is given by the attribute 
+"favorite\_count" of a tweet object.
 
-The feature number 4 indicates how many times a tweet has been "favorited" by 
-other users. This count is given by the attribute "favorite\_count"  of a tweet 
-object.
+The following feature is based on the URLs found, or not, in a tweet 
+The list of URLs is provided by the \emph{Tweet entities} object.
 
-The fifth feature gives the number of other tweets (including retweets) issued 
-by the author. This information is provided by the attribute "statuses\_count" 
-of the \emph{User} object.
+The number of hashtags feature is simply the number of hashtags found in a 
+\emph{Tweet} object.
 
-The feature number 6 indicates if the author of the tweet has a verified 
-account. Such accounts establish the authenticity of the user's identity. In 
-our case, this means that the author of the tweet is famous and then he will be 
-probably retweeted.
+The remaining features have been disabled. 
 
-The seventh feature is the number of friends (aka the number users following 
-the author). This count is provided by the \emph{User} object. The number of 
-friends is strongly related to the number of retweets.
+The feature number 11 indicates if the author of the tweet has a verified 
+account. Such accounts establish the authenticity of the user's identity. This 
+feature would probably have been much more significant if the dataset was not 
+limited by the theme of \textit{shampoo}.
 
-The feature number 8 counts the number of hashtags from the \emph{Tweet} 
-object and the feature number nine is the number of words of the tweet.
+The tweet's age, i.e. the number of days passed since the tweet was posted, is 
+not surprisingly insignificant.
 
-The tenth feature gives the number of users mentionned with a "@username" in 
-the tweet. This information is calculated from the list of "user\_mentions" 
-given by the \emph{User} object.
+We were unfortunately not able to evaluate the significance of the term 
+frequency (TF) and the the term frequency - inverse document frequency 
+(TF-IDF). The chi-square obtained was $NaN$ and therefore the $p-value$ too.
+Moreover, we were not able to compute the TF-IDF at all due to a bug in 
+the \emph{scikit} library that we use. We are pretty disappointed by this fact 
+because the TF and especially the TF-IDF features would probably have been very 
+good candidates.
 
-The feature number 11 indicates if the tweet contains an URL or not. The 
-list of URL is provided by the \emph{Tweet entities} object.
+We would have loved to try other features. Among those we wanted to implement 
+but did not because we were short on time were the author's account age, the 
+number of tweets per day.
 
-The feature number 12 uses the TF (Term Frequency). The words occurrences 
-used to compute the TF are calculated as explained in the previous section.
-
-Since the two last features did not give good results, they have been 
-removed. The Tweet age were not significant while the TF-IDF (Term Frequency - 
-Inverse Document Frequency) feature did not work due to a bug in the 
-\emph{scikit} library.

@@ -37,10 +37,10 @@ surprising because we did not reduce the dimensionality.
   \tabhead{Classifier} &
   \multicolumn{1}{|p{0.4\columnwidth}|}{\centering\tabhead{Accuracy}} \\
   \hline
-  MaxEnt & 92.00\%\\
+  MaxEnt & 91.99\%\\
   LDA & 91.84\%\\
-  Naive Bayes & 91.76\%\\
-  Decision Tree & 86.49\%\\
+  Naive Bayes & 91.77\%\\
+  Decision Tree & 86.97\%\\
   SVM (with RBF Kernel) & 60.05\%\\
   SVM (with Sigmoid Kernel) & 59.78\%\\
   Majority Vote & 59.78\%\\
@@ -71,18 +71,28 @@ shown in table \ref{tab:cross}.
   \tabhead{Classifier} &
   \multicolumn{1}{|p{0.4\columnwidth}|}{\centering\tabhead{Average accuracy}} \\
   \hline
-  MaxEnt & 92.00\%\\
-  LDA & 91.84\%\\
-  Naive Bayes & 91.76\%\\
-  Decision Tree & 86.49\%\\
-  SVM (with RBF Kernel) & 60.05\%\\
-  SVM (with Sigmoid Kernel) & 59.78\%\\
-  Majority Vote & 59.78\%\\
+  MaxEnt & 92.10\%\\
+  LDA & 92.04\%\\
+  Naive Bayes & 92.00\%\\
+  Decision Tree & 87.35\%\\
+  Majority Vote & 60.91\%\\
+  SVM (with RBF Kernel) & N/A\\
+  SVM (with Sigmoid Kernel) & N/A\\
   \hline
  \end{tabular}
  \caption{Average accuracy gotten from the cross-validation}
  \label{tab:cross}
 \end{table}
+
+By comparing these results with the one from the classification, we can notice 
+that they are very close to each another. The small difference is explained by 
+the different partitioning of the dataset as the train set was less than half 
+of the train set of the classification. Thus, the results of the 
+cross-validation validates the results obtained in the classification step.
+
+There is no results for the two SVMs classifiers as their computation is very 
+long and it would need to be computed ten times. However, we can expect similar 
+results.
 
 \subsection{Algorithm tournament}
 
