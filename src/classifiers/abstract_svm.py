@@ -24,7 +24,7 @@ class AbstractSVM(ac.AbstractClassifier):
 
     def train_helper(self, labels, train_set, kernel_name, deg=3):
         self.classifier = svm.SVC(kernel=kernel_name, degree=deg,
-                                  probability=True)
+                                  probability=True, cache_size=1000.0)
         l,ts = helper.format_for_scikit(labels, train_set)
 
         #pca = PCA(n_components='mle')
