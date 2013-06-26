@@ -234,7 +234,7 @@ def main(classification=True,
          randomize=False,
          verbose=False,
          plot_roc=False,
-         multithreading=False):
+         multiprocessing=False):
     """main function"""
 
     if devset:
@@ -290,8 +290,8 @@ def main(classification=True,
     classif_objs = [
                     #nb.NaiveBayes(plot_roc),
                     nbs.NaiveBayesScikit(plot_roc),
-                    #svm_rbf.SVMRBF(plot_roc),
-                    #svm_sigmoid.SVMSigmoid(plot_roc),
+                    svm_rbf.SVMRBF(plot_roc),
+                    svm_sigmoid.SVMSigmoid(plot_roc),
                     #svm_poly.SVMPoly(plot_roc),
                     #svm_linear.SVMLinear(plot_roc),
                     #me.MaxEnt(plot_roc),
@@ -327,7 +327,7 @@ def main(classification=True,
         train_labels = labels[0:-size+1]
         test_labels  = labels[-size+1:]
 
-        if multithreading:
+        if multiprocessing:
             c_thread = Process(target=classification_routine,
                                args=(train_data, test_data, train_labels,
                                      test_labels, classif_objs))
@@ -338,7 +338,7 @@ def main(classification=True,
                                    test_labels, classif_objs)
 
     if x_validation:
-        if multithreading:
+        if multiprocessing:
             xv_thread = Process(target=cross_validation,
                                 args=(instances, labels, classif_objs))
             print("Starting cross-validation thread...")
@@ -349,7 +349,7 @@ def main(classification=True,
             print(ave)
 
     if tournament:
-        if multithreading:
+        if multiprocessing:
             t_thread = Process(target=algorithm_tournament,
                                args=(instances, labels, classif_objs))
             print("Starting tournament thread...")
@@ -357,7 +357,7 @@ def main(classification=True,
         else:
             algorithm_tournament(instances, labels, classif_objs)
 
-    if multithreading:
+    if multiprocessing:
         if classification:
             c_thread.join()
         if x_validation:
@@ -383,7 +383,7 @@ if __name__ == "__main__":
                         action='store_true',
                         default=False,
                         help='use development dataset')
-    parser.add_argument('-m', '--multithreading',
+    parser.add_argument('-m', '--multiprocessing',
                         action='store_true',
                         default=False,
                         help='activate multiprocessing. It should be faster on \
@@ -427,7 +427,7 @@ if __name__ == "__main__":
              args.randomize,
              args.verbose,
              args.plot_roc,
-             args.multithreading)
+             args.multiprocessing)
     elif args.all:
         main(True,
              True,
@@ -436,7 +436,7 @@ if __name__ == "__main__":
              args.randomize,
              args.verbose,
              args.plot_roc,
-             args.multithreading)
+             args.multiprocessing)
     else:
         main(args.classification,
              args.tournament,
@@ -445,6 +445,6 @@ if __name__ == "__main__":
              args.randomize,
              args.verbose,
              args.plot_roc,
-             args.multithreading)
+             args.multiprocessing)
 
     sys.exit(0)
