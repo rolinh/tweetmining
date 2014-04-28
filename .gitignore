@@ -2,6 +2,7 @@
 *.swp
 *.pyc
 *.directory
+*.json
 
 # files
 scripts/credentials.py
