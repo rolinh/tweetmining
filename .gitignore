@@ -12,6 +12,7 @@ _build
 __pycache__
 bin
 build
+env
 include
 lib
 local
