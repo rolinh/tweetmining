@@ -21,7 +21,7 @@ Once the requirements are met, you can process as follow:
 
   * Set up a virtual environment first:
 
-    virtualenv -p python2.7 .
+    virtualenv -p python2.7 env
 
   * And activate it:
 
